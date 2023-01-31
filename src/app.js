@@ -1,5 +1,8 @@
 const http = require("http");
 const express = require("express");
+const categoryRouter = require('../../5wesome-mall-item/src/category/categoryRouter');
+const productRouter = require('../../5wesome-mall-item/src/product/productRouter');
+
 
 const loader = require("./loader");
 const config = require("./config");
@@ -24,7 +27,10 @@ async function createApp() {
   });
 
   // 여러분들이 정의하는 Router가 들어갈 자리
+  expressApp.use('/api', categoryRouter);
+  expressApp.use('/apis', productRouter);
 
+  
   // 의도치 않은 주소로 들어오는 요청들은 모두 에러 처리를 해주면된다
   expressApp.use((req, res, next) => {
     next(
