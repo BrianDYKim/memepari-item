@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Category } = require('./categorySchema');
+const { Category } = require('../domain/categorySchema');
 
 router.get('/', (req, res) => {
   res.json('hi');

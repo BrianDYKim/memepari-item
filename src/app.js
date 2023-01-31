@@ -1,13 +1,13 @@
 const http = require('http');
 const express = require('express');
-const categoryRouter = require('../../5wesome-mall-item/src/category/categoryRouter');
-const productRouter = require('../../5wesome-mall-item/src/product/productRouter');
+const categoryRouter = require('./category/router/categoryRouter');
+const { productRouter } = require('./product/router');
 
 const loader = require('./loader');
 const config = require('./config');
 const { AppError } = require('./misc/AppError');
 const { commonErrors } = require('./misc/commonErrors');
-const { utils } = require('./misc/utils');
+const utils = require('./misc/utils');
 
 async function createApp() {
   // MongoDB에 연결
@@ -27,7 +27,7 @@ async function createApp() {
 
   // 여러분들이 정의하는 Router가 들어갈 자리
   expressApp.use('/api', categoryRouter);
-  expressApp.use('/apis', productRouter);
+  expressApp.use('/api/v1/products', productRouter);
 
   // 의도치 않은 주소로 들어오는 요청들은 모두 에러 처리를 해주면된다
   expressApp.use((req, res, next) => {
