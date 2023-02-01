@@ -1,14 +1,8 @@
 const express = require('express');
-const router = express.Router();
-const { Category } = require('../domain/categorySchema');
+const categoryRouter = express.Router(); 
 
-router.get('/', (req, res) => {
-  res.json('hi');
-});
+const { categoryController, categoryMiddleware } = require('../presentation');
 
-router.get('/category', async (req, res) => {
-  const categoryTotal = await Category.find();
-  res.json(categoryTotal);
-});
+categoryRouter.get('/', categoryController.findAllCategory);
 
-module.exports = router;
+module.exports = categoryRouter;
