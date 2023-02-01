@@ -5,14 +5,14 @@ const { categoryService } = require('../../application');
 
 const categoryController = {
   async findAllCategory(req, res, next) {
-    try { 
+    try {
       const foundCategory = await categoryService.findAllCategory();
 
-      if (foundCategory.lengh === 0) {
+      if (foundCategory.length === 0) {
         throw new AppError(
           commonErrors.resourceNotFoundError,
-          400, 
-          '밈이 하나도 없네요 ㅠㅠ'
+          400,
+          '카테고리가 하나도 없어요! ㅠㅠ'
         );
       }
       const responseBody = utils.buildResponse(foundCategory);
@@ -23,4 +23,6 @@ const categoryController = {
   },
 };
 
-module.exports = categoryController; 
+module.exports = {
+  categoryController,
+};

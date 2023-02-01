@@ -1,4 +1,4 @@
-const checkCreatable = (from) => (req, res, next) = {};
+const checkCreatable = (from) => (req, res, next) => {};
 
 module.exports = {
   checkCreatable,
