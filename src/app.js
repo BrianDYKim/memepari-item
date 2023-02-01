@@ -26,7 +26,7 @@ async function createApp() {
   });
 
   // 여러분들이 정의하는 Router가 들어갈 자리
-  expressApp.use('/api', categoryRouter);
+  expressApp.use('/api/v1/categories', categoryRouter);
   expressApp.use('/api/v1/products', productRouter);
 
   // 의도치 않은 주소로 들어오는 요청들은 모두 에러 처리를 해주면된다
