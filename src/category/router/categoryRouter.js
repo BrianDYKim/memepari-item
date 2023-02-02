@@ -11,8 +11,8 @@ categoryRouter.post(
 );
 
 categoryRouter.delete(
-  '/',
-  categoryMiddleware.checkDeletable('body'),
+  '/:name',
+  categoryMiddleware.checkDeletable,
   categoryController.deleteCategory
 );
 
