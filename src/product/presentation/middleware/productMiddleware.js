@@ -20,8 +20,7 @@ const checkCreatable = (from) => async (req, res, next) => {
       )
     );
   }
-
-  if ( price === undefined ) {
+  if ( price === undefined || price.length < 0 ) {
     next ( 
       new AppError (
         commonErrors.inputError,
@@ -49,7 +48,7 @@ const checkCreatable = (from) => async (req, res, next) => {
       )
     );
   }
-
+// 카테고리가 실제로 존재하는지 확인할 것. 
   if ( category === undefined ) {
     next (
       new AppError (
@@ -59,8 +58,19 @@ const checkCreatable = (from) => async (req, res, next) => {
       )
     );
   }
-  
-  if (name.lenght > 30) {
+
+  if (!category) {
+    next (
+      new AppError (
+        commonErrors.inputError,
+        400, 
+        `${from}: 카테고리가 존재하지 않습니다.`
+      )
+    );
+  }
+
+  // 오타 확인하기 
+  if (name.length > 30) {
     next(
       new AppError (
         commonErrors.inputError,
@@ -70,7 +80,7 @@ const checkCreatable = (from) => async (req, res, next) => {
     );
   }
 
-  if (author.lenght > 30) {
+  if (author.length > 30) {
     next(
       new AppError (
         commonErrors.inputError,
@@ -78,6 +88,16 @@ const checkCreatable = (from) => async (req, res, next) => {
         `${from}: 제조사 이름은 30글자 이내로 작성 부탁드립니다.`
       )
     );
+  }
+
+  if (price.length < 0) {
+    next(
+      new AppError(
+        commonErrors.inputError, 
+        400, 
+        `${from}: 가격은 0원 이상이어야 합니다. `
+      )
+    )
   }
 
   const isDupicatedName = await productService.isAlreadyExistProductByName (name); 
