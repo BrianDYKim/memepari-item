@@ -6,16 +6,16 @@ const { categoryService } = require('../../application');
 const categoryController = {
   async findAllCategory(req, res, next) {
     try {
-      const foundCategory = await categoryService.findAllCategory();
+      const readCategoryResponseList = await categoryService.findAllCategory();
 
-      if (foundCategory.length === 0) {
+      if (readCategoryResponseList.length === 0) {
         throw new AppError(
           commonErrors.resourceNotFoundError,
           400,
           '카테고리가 하나도 없어요! ㅠㅠ'
         );
       }
-      const responseBody = utils.buildResponse(foundCategory);
+      const responseBody = utils.buildResponse(readCategoryResponseList);
       res.status(201).json(responseBody);
     } catch (error) {
       next(error);
