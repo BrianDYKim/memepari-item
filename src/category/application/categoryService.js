@@ -2,8 +2,16 @@ const { categoryDao } = require('../domain');
 
 const categoryService = {
   async findAllCategory() {
-    // map 함수를 적극적으로 사용해보세요!
-    return await categoryDao.findAll();
+    const allCategoryDocuments = await categoryDao.findAll();
+
+    const readCategoryResponseList = allCategoryDocuments.map(category => ({
+      id: category.id, 
+      name: category.name, 
+      productCount: category.productCount, 
+      description: category.description
+    }));
+
+    return readCategoryResponseList;
   },
   async createNewCategory({ name, description }) {
     const productCount = 0;
@@ -15,10 +23,10 @@ const categoryService = {
     });
 
     const createCategoryResponse = {
-      id: result.id, 
-      name: result.name, 
-      productCount: result.productCount, 
-      description: result.description
+      id: result.id,
+      name: result.name,
+      productCount: result.productCount,
+      description: result.description,
     };
 
     return createCategoryResponse;
