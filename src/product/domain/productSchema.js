@@ -12,11 +12,9 @@ const ProductSchema = new Schema({
   },
   description: {
     type: String,
-    required: true,
   },
   detailDescription: {
     type: String,
-    required: true,
   },
   author: {
     type: String,
