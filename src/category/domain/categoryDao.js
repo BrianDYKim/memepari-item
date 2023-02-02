@@ -14,6 +14,10 @@ const categoryDao = {
 
     return foundCategory ? true : false;
   },
+
+  async deleteCategory(name) {
+    return await Category.deleteOne({ name });
+  },
 };
 
 module.exports = categoryDao;

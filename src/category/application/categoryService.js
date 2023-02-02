@@ -34,6 +34,10 @@ const categoryService = {
   async isAlreadyExistCategoryByName(name) {
     return await categoryDao.existsByName(name);
   },
+
+  async deleteCategoryByName(name) {
+    return await categoryDao.deleteCategory(name);
+  }
 };
 
 module.exports = categoryService;

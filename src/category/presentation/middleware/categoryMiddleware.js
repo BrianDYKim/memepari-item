@@ -62,6 +62,35 @@ const checkCreatable = (from) => async (req, res, next) => {
   next();
 };
 
+const checkDeletable = (from) => async (req, res, next) => {
+  const {name} = req[from];
+
+  const existingCategory = await categoryService.isAlreadyExistCategoryByName(name);
+  if(!existingCategory) {
+    next(
+      new AppError(
+        commonErrors.resourceNotFoundError,
+        400,
+        `해당 category 가 없습니다`
+      )
+    );
+  }
+
+  // const productsInCategory = await productService.findProductsInCategory();
+  // if(productsInCategory){
+  //   next(
+  //     new AppError(
+  //       commonErrors.requestValidationError,
+  //       400,
+  //       `해당 카테고리에 상품이 있어서 카테고리를 삭제할 수 없습니다`
+  //     )
+  //   );
+  // }
+
+    next();
+}
+
 module.exports = {
   checkCreatable,
+  checkDeletable,
 };
