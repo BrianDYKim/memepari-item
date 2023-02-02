@@ -21,6 +21,19 @@ const categoryController = {
       next(error);
     }
   },
+  async createCategory(req, res, next) {
+    try {
+      const { name, description } = req.body;
+      const createCategoryRequest = { name, description };
+      const createdCategoryResponse = await categoryService.createNewCategory(createCategoryRequest);
+
+      const responseBody = utils.buildResponse(createdCategoryResponse);
+      
+      res.status(201).json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = {
