@@ -62,8 +62,18 @@ const checkCreatable = (from) => async (req, res, next) => {
   next();
 };
 
-const checkDeletable = async (req, res, next) => {
-  const { name } = req.params;
+const checkDeletable = (from) => async (req, res, next) => {
+  const { name } = req[from];
+
+  if (name === undefined || name.length === 0) {
+    next(
+      new AppError(
+        commonErrors.inputError,
+        400,
+        `${from}: category 이름이 올바르지 않습니다.`
+      )
+    );
+  }
 
   const foundCategory = await categoryService.findCategoryByName(name);
 
