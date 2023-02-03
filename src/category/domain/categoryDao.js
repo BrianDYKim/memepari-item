@@ -25,6 +25,15 @@ const categoryDao = {
   async deleteOneById(id) {
     return await Category.deleteOne({ id });
   },
+
+  async updateOneById({id, newName, description}) {
+    const updateCategory = {
+      name: newName,
+      description: description,
+    };
+
+    return await Category.findOneAndUpdate({id}, updateCategory);
+  }
 };
 
 module.exports = categoryDao;
