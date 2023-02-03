@@ -12,7 +12,7 @@ categoryRouter.post(
 
 categoryRouter.delete(
   '/:name',
-  categoryMiddleware.checkDeletable,
+  categoryMiddleware.checkDeletable('params'),
   categoryController.deleteCategory
 );
 
