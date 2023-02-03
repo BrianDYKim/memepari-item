@@ -27,9 +27,11 @@ const categoryDao = {
   },
 
   async updateOneById({id, newName, description}) {
+    const targetCategory = await Category.findById(id);
+
     const updateCategory = {
-      name: newName,
-      description: description,
+      name: newName ? newName : targetCategory.name,
+      description: description ? description : targetCategory.description,
     };
 
     return await Category.findOneAndUpdate({id}, updateCategory);

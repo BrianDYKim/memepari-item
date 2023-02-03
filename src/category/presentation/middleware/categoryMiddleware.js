@@ -126,42 +126,32 @@ const checkUpdatable = async (req, res, next) => {
     );
   }
 
-  if (newName === undefined || newName.length === 0) {
+  if (newName === undefined && description === undefined) {
     next(
       new AppError(
         commonErrors.inputError,
         400,
-        `${req.body}: category의 이름은 필수 값입니다`
+        `${req.body}: name, category 둘 중 하나는 입력이 되어야합니다`
       )
     );
   }
 
-  if (description === undefined || description.length === 0) {
+  if (newName !== undefined && (newName.length === 0 || newName.length > 30)) {
     next(
       new AppError(
         commonErrors.inputError,
         400,
-        `${req.body}: category의 설명은 필수 값입니다`
+        `${req.body}: category의 이름은 30자 이내로 작성바랍니다`
       )
     );
   }
 
-  if (newName.length > 30) {
+  if (description !== undefined && (description.length === 0 || description.length > 150)) {
     next(
       new AppError(
         commonErrors.inputError,
         400,
-        `${req.body}: category의 이름은 30글자 이내로 작성 부탁드립니다`
-      )
-    );
-  }
-
-  if (description.length > 150) {
-    next(
-      new AppError(
-        commonErrors.inputError,
-        400,
-        `${req.body}: category의 설명은 150글자 이내로 작성 부탁드립니다`
+        `${req.body}: category의 설명은 150자 이내로 작성바랍니다`
       )
     );
   }
