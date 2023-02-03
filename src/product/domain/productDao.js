@@ -32,6 +32,10 @@ const productDao = {
     });
     return foundProduct ? true : false; 
   },
+
+  async getOneById(id) {
+    return await Product.findById(id);
+  },
 };
 
 module.exports = productDao;

@@ -55,6 +55,18 @@ const productController = {
       next(error);
     }
   },
+  async getProduct(req, res, next) {
+    try {
+      const { id } = req.params;
+      const foundProduct = await productService.getProduct(id);
+    
+      const responseBody = utils.buildResponse(foundProduct)
+    
+      res.status(201).json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = productController;

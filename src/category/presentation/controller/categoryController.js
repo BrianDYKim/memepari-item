@@ -21,6 +21,7 @@ const categoryController = {
       next(error);
     }
   },
+  
   async createCategory(req, res, next) {
     try {
       const { name, description } = req.body;

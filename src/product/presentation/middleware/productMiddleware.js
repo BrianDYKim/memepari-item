@@ -112,7 +112,24 @@ const checkCreatable = (from) => async (req, res, next) => {
   }
   next();
 };
+//실제 존재하는 상품을 대상으로 요청을 했는가?
+
+const checkProductId = (from) => async (req, res, next) => {
+  const { id } = req[from];
+
+  if (id === undefined){
+    next(
+      new AppError(
+        commonErrors.inputError,
+        400, 
+        `${from}: 상품의 id 정보가 입력되지 않았습니다.`
+      )
+    )
+  }
+  next();
+};
+
 
 module.exports = {
-  checkCreatable,
+  checkCreatable, checkProductId
 };
