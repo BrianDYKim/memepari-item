@@ -122,7 +122,7 @@ const checkProductId = (from) => async (req, res, next) => {
       new AppError(
         commonErrors.inputError,
         400, 
-        `${from}: 존재하지 않는 상품입니다.`
+        `${from}: 상품의 id 정보가 입력되지 않았습니다.`
       )
     )
   }
