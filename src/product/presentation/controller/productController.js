@@ -33,6 +33,7 @@ const productController = {
         imageUrl,
         category,
       } = req.body;
+
       const createProductRequest = {
         name,
         price,
@@ -42,6 +43,7 @@ const productController = {
         imageUrl,
         category,
       };
+      
       const createdProductResponse = await productService.createNewProduct(
         createProductRequest
       );
