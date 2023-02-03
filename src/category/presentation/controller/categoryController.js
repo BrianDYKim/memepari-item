@@ -28,12 +28,25 @@ const categoryController = {
       const createdCategoryResponse = await categoryService.createNewCategory(createCategoryRequest);
 
       const responseBody = utils.buildResponse(createdCategoryResponse);
-      
+
       res.status(201).json(responseBody);
     } catch (error) {
       next(error);
     }
   },
+
+  async deleteCategory(req, res, next) {
+    try {
+      const {name} = req.params;
+      await categoryService.deleteCategoryByName(name);
+
+      const responseBody = utils.buildResponse('삭제완료');
+
+      res.status(201).json(responseBody);
+    } catch (error) {
+      next (error);
+    }
+  }
 };
 
 module.exports = {

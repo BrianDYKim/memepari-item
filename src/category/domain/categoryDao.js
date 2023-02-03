@@ -14,6 +14,17 @@ const categoryDao = {
 
     return foundCategory ? true : false;
   },
+
+  async findOne(name) {
+    return await Category.findOne({name});
+  },
+  async findOneById(id){
+    return await Category.findOne({id});
+  },
+
+  async deleteCategory(id) {
+    return await Category.deleteOne({ id });
+  },
 };
 
 module.exports = categoryDao;
