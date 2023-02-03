@@ -1,3 +1,5 @@
+const { AppError } = require('../../misc/AppError');
+const { commonErrors } = require('../../misc/commonErrors');
 const { productDao } = require('../domain');
 
 const productService = {
@@ -56,16 +58,19 @@ const productService = {
   async getProduct(id) {
     const result = await productDao.getOneById(id);
 
-    const getProductResponse = {
-      name: result.name,
-      price: result.price,
-      description: result.description,
-      detailDescription: result.detailDescription,
-      author: result.author,
-      imageUrl: result.imageUrl,
-      category: result.category,
-    };
-    return getProductResponse;
+    if (!result) {
+      throw new AppError(
+        commonErrors.resourceNotFoundError,
+        400,
+        '해당 상품이 존재하지 않습니다.'
+      );
+    }
+
+    const {name, price, description, detailDescription, author, imageUrl, category} = result;
+
+    const detailProductResponse = { name, price, description, detailDescription, author, imageUrl, category};
+
+    return detailProductResponse;
   },
 };
 
