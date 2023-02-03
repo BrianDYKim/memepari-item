@@ -15,14 +15,14 @@ const categoryDao = {
     return foundCategory ? true : false;
   },
 
-  async findOne(name) {
-    return await Category.findOne({name});
+  async findOneByName(name) {
+    return await Category.findOne({ name });
   },
-  async findOneById(id){
-    return await Category.findOne({id});
+  async findOneById(id) {
+    return await Category.findById(id);
   },
 
-  async deleteCategory(id) {
+  async deleteOneById(id) {
     return await Category.deleteOne({ id });
   },
 };

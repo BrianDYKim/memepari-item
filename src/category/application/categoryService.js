@@ -4,11 +4,11 @@ const categoryService = {
   async findAllCategory() {
     const allCategoryDocuments = await categoryDao.findAll();
 
-    const readCategoryResponseList = allCategoryDocuments.map(category => ({
+    const readCategoryResponseList = allCategoryDocuments.map((category) => ({
       id: category.id,
       name: category.name,
       productCount: category.productCount,
-      description: category.description
+      description: category.description,
     }));
 
     return readCategoryResponseList;
@@ -35,17 +35,14 @@ const categoryService = {
     return await categoryDao.existsByName(name);
   },
   async findCategoryByName(name) {
-    const result = await categoryDao.findOne(name);
-    const id = result.id;
-    return await categoryDao.findOneById(id);
+    return await categoryDao.findOneByName(name);
   },
   async deleteCategoryByName(name) {
-    const result = await categoryDao.findOne(name)
+    const result = await categoryDao.findOneByName(name);
     const id = result.id;
-    // console.log('id:',id); // id: 63dbd407ec8c07458a87b158
-    // console.log('_id:',result._id); //_id: new ObjectId("63dbd407ec8c07458a87b158")
-    return await categoryDao.deleteCategory(id);
-  }
+
+    return await categoryDao.deleteOneById(id);
+  },
 };
 
 module.exports = categoryService;

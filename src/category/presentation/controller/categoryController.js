@@ -25,7 +25,9 @@ const categoryController = {
     try {
       const { name, description } = req.body;
       const createCategoryRequest = { name, description };
-      const createdCategoryResponse = await categoryService.createNewCategory(createCategoryRequest);
+      const createdCategoryResponse = await categoryService.createNewCategory(
+        createCategoryRequest
+      );
 
       const responseBody = utils.buildResponse(createdCategoryResponse);
 
@@ -37,16 +39,16 @@ const categoryController = {
 
   async deleteCategory(req, res, next) {
     try {
-      const {name} = req.params;
+      const { name } = req.params;
       await categoryService.deleteCategoryByName(name);
 
-      const responseBody = utils.buildResponse('삭제완료');
+      const responseBody = utils.buildResponse('OK');
 
       res.status(201).json(responseBody);
     } catch (error) {
-      next (error);
+      next(error);
     }
-  }
+  },
 };
 
 module.exports = {
