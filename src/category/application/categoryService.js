@@ -1,6 +1,9 @@
 const { categoryDao } = require('../domain');
 
 const categoryService = {
+  async findById(id) {
+    return await categoryDao.findOneById(id);
+  },
   async findAllCategory() {
     const allCategoryDocuments = await categoryDao.findAll();
 
