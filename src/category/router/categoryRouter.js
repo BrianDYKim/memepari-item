@@ -10,4 +10,10 @@ categoryRouter.post(
   categoryController.createCategory
 );
 
+categoryRouter.delete(
+  '/:name',
+  categoryMiddleware.checkDeletable,
+  categoryController.deleteCategory
+);
+
 module.exports = categoryRouter;

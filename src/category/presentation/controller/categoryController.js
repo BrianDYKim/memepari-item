@@ -25,10 +25,25 @@ const categoryController = {
     try {
       const { name, description } = req.body;
       const createCategoryRequest = { name, description };
-      const createdCategoryResponse = await categoryService.createNewCategory(createCategoryRequest);
+      const createdCategoryResponse = await categoryService.createNewCategory(
+        createCategoryRequest
+      );
 
       const responseBody = utils.buildResponse(createdCategoryResponse);
-      
+
+      res.status(201).json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async deleteCategory(req, res, next) {
+    try {
+      const { name } = req.params;
+      await categoryService.deleteCategoryByName(name);
+
+      const responseBody = utils.buildResponse('OK');
+
       res.status(201).json(responseBody);
     } catch (error) {
       next(error);
