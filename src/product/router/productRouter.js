@@ -10,4 +10,10 @@ productRouter.post(
   productController.createProduct
 );
 
+productRouter.get(
+  '/:id',
+  productMiddleware.checkProductId('params'),
+  productController.getProduct
+);
+
 module.exports = productRouter;
