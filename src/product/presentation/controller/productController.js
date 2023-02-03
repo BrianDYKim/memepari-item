@@ -22,7 +22,37 @@ const productController = {
       next(error);
     }
   },
+  async createProduct(req, res, next) {
+    try {
+      const {
+        name,
+        price,
+        description,
+        detailDescription,
+        author,
+        imageUrl,
+        category,
+      } = req.body;
+      const createProductRequest = {
+        name,
+        price,
+        description,
+        detailDescription,
+        author,
+        imageUrl,
+        category,
+      };
+      const createdProductResponse = await productService.createNewProduct(
+        createProductRequest
+      );
+
+      const responseBody = utils.buildResponse(createdProductResponse);
+
+      res.status(201).json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = productController;
-
