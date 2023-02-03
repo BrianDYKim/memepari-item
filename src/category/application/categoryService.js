@@ -46,6 +46,14 @@ const categoryService = {
 
     return await categoryDao.deleteOneById(id);
   },
+
+  async updateCategoryByName({oldName, newName, description}) {
+    const result = await categoryDao.findOneByName(oldName);
+    const id = result.id;
+
+
+    return await categoryDao.updateOneById({id, newName, description});
+  },
 };
 
 module.exports = categoryService;
