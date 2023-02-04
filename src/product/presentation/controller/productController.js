@@ -67,6 +67,19 @@ const productController = {
       next(error);
     }
   },
+
+  async deleteProduct(req, res, next) { 
+    try {
+      const { id } = req.params; 
+      const deleteProduct = await productService.deleteProductById(id);
+
+      const responseBody = utils.buildResponse(deleteProduct);
+      
+      res.status(201).json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = productController;
