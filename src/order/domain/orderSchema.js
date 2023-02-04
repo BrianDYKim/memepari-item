@@ -30,6 +30,10 @@ const orderSchema = new Schema(
         },
       },
     ],
+    status: {
+      type: String, 
+      required: true
+    }
   },
   { timestamps: true }
 );
