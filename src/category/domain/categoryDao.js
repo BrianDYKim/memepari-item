@@ -18,6 +18,7 @@ const categoryDao = {
   async findOneByName(name) {
     return await Category.findOne({ name });
   },
+  
   async findOneById(id) {
     return await Category.findById(id);
   },

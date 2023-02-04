@@ -72,9 +72,10 @@ const productService = {
 
     return detailProductResponse;
   },
-  async deleteProductByName(name) {
-    const deleteProductByName = await productDao.deleteOneByName(name);
-    return deleteProductByName;
+
+  async deleteProductById(id) {
+    const deleteProductById = await productDao.deleteOneById(id);
+    return deleteProductById;
   },
 };
 

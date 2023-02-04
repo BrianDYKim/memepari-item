@@ -11,7 +11,15 @@ const { categoryService } = require('../../../category/application');
 이미지도 필수로 필요하다
 카테고리는 무조건 등록해야한다 */
 const checkCreatable = (from) => async (req, res, next) => {
-  const { name, description, detailDescription, price, author, imageUrl, category } = req[from];
+  const {
+    name,
+    description,
+    detailDescription,
+    price,
+    author,
+    imageUrl,
+    category,
+  } = req[from];
 
   if (name === undefined || name.length === 0 || name.length > 30) {
     next(
@@ -33,24 +41,32 @@ const checkCreatable = (from) => async (req, res, next) => {
     );
   }
 
-  if (description === undefined || description.length === 0 || description.length > 100) {
+  if (
+    description === undefined ||
+    description.length === 0 ||
+    description.length > 100
+  ) {
     next(
       new AppError(
-        commonErrors.inputError, 
-        400, 
+        commonErrors.inputError,
+        400,
         `${from}: 제품 설명은 필수값이며, 1자 이상, 150자 이하로 부탁드립니다.`
       )
-    )
+    );
   }
 
-  if ( detailDescription === undefined || detailDescription.length === 0 || detailDescription.length > 200) {
+  if (
+    detailDescription === undefined ||
+    detailDescription.length === 0 ||
+    detailDescription.length > 200
+  ) {
     next(
       new AppError(
-        commonErrors.inputError, 
-        400, 
+        commonErrors.inputError,
+        400,
         `${from}: 제품 상세 설명은 필수값이며, 1자 이상, 200자 이하로 부탁드립니다.`
       )
-    )
+    );
   }
 
   if (author === undefined || author.length === 0 || author.length > 30) {
@@ -117,26 +133,26 @@ const checkCreatable = (from) => async (req, res, next) => {
 const checkProductId = (from) => async (req, res, next) => {
   const { id } = req[from];
 
-  if (id === undefined){
+  if (id === undefined) {
     next(
       new AppError(
         commonErrors.inputError,
-        400, 
+        400,
         `${from}: 상품의 id 정보가 입력되지 않았습니다.`
       )
-    )
+    );
   }
   next();
 };
 
-const checkDeletable = (from) => async(req, res, next) => {
-  const { name } = req[from];
+const checkDeletable = (from) => async (req, res, next) => {
+  const { id } = req[from];
 
-  if (name === undefined) {
+  if (id === undefined) {
     next(
       new AppError(
         commonErrors.inputError,
-        400, 
+        400,
         `${from}: 상품의 id 정보가 입력되지 않았습니다.`
       )
     );
@@ -147,5 +163,7 @@ const checkDeletable = (from) => async(req, res, next) => {
 
 
 module.exports = {
-  checkCreatable, checkProductId, checkDeletable
+  checkCreatable,
+  checkProductId,
+  checkDeletable,
 };

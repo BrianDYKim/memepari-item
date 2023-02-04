@@ -55,6 +55,7 @@ const productController = {
       next(error);
     }
   },
+
   async getProduct(req, res, next) {
     try {
       const { id } = req.params;
@@ -68,10 +69,11 @@ const productController = {
     }
   },
 
+
   async deleteProduct(req, res, next) { 
     try {
-      const { name } = req.params; 
-      const deleteProduct = await productService.deleteProductByName(name); 
+      const { id } = req.params; 
+      const deleteProduct = await productService.deleteProductById(id); 
 
       const responseBody = utils.buildResponse(deleteProduct); 
       

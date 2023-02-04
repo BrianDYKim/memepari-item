@@ -1,4 +1,5 @@
 const express = require('express');
+const { getProduct } = require('../application/productService');
 const productRouter = express.Router();
 
 const { productController, productMiddleware } = require('../presentation');
@@ -17,7 +18,7 @@ productRouter.get(
 );
 
 productRouter.delete(
-  '/:name',
+  '/:id',
   productMiddleware.checkDeletable('params'),
   productController.deleteProduct
 );
