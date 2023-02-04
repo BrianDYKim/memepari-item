@@ -1,7 +1,9 @@
 const { Router } = require('express');
+const { orderController, orderMiddleware } = require('../presentation');
+
 const orderRouter = Router();
 
-const { orderController, orderMiddleware } = require('../presentation');
+orderRouter.post('/', orderMiddleware.checkCreatable('body'), orderController.createOrder);
 
 module.exports = {
   orderRouter,
