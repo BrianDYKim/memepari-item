@@ -13,7 +13,7 @@ const orderService = {
 };
 
 function entityToDetailResponse(order) {
-  const { totalCount, totalPrice, items } = order;
+  const { totalCount, totalPrice, items, status } = order;
 
   const responseItems = items.map((item) => ({
     productId: item.productId,
@@ -22,7 +22,7 @@ function entityToDetailResponse(order) {
     count: item.count,
   }));
 
-  return { totalCount, totalPrice, items: responseItems };
+  return { totalCount, totalPrice, items: responseItems, status };
 }
 
 module.exports = orderService;
