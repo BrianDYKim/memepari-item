@@ -72,6 +72,10 @@ const productService = {
 
     return detailProductResponse;
   },
+  async deleteProductByName(name) {
+    const deleteProductByName = await productDao.deleteOneByName(name);
+    return deleteProductByName;
+  },
 };
 
 module.exports = productService;

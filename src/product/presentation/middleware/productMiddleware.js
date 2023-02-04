@@ -129,7 +129,23 @@ const checkProductId = (from) => async (req, res, next) => {
   next();
 };
 
+const checkDeletable = (from) => async(req, res, next) => {
+  const { name } = req[from];
+
+  if (name === undefined) {
+    next(
+      new AppError(
+        commonErrors.inputError,
+        400, 
+        `${from}: 상품의 id 정보가 입력되지 않았습니다.`
+      )
+    );
+  }
+
+  next();
+};
+
 
 module.exports = {
-  checkCreatable, checkProductId
+  checkCreatable, checkProductId, checkDeletable
 };

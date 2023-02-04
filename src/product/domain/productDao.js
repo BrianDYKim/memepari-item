@@ -36,6 +36,10 @@ const productDao = {
   async getOneById(id) {
     return await Product.findById(id);
   },
+
+  async deleteOneByName(name) {
+    return await Product.findOneAndDelete({ name }); 
+  },  
 };
 
 module.exports = productDao;
