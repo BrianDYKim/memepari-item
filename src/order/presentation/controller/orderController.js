@@ -5,6 +5,4 @@ const { categoryService } = require('../../application');
 
 const orderController = {};
 
-module.exports = {
-  orderController,
-};
+module.exports = orderController;

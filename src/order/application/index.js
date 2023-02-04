@@ -1,4 +1,4 @@
-const { orderService } = require('./orderService');
+const orderService = require('./orderService');
 
 module.exports = {
   orderService,
