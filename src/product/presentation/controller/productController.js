@@ -70,10 +70,10 @@ const productController = {
 
   async deleteProduct(req, res, next) { 
     try {
-      const { name } = req.params; 
-      const deleteProduct = await productService.deleteProductByName(name); 
+      const { id } = req.params; 
+      const deleteProduct = await productService.deleteProductById(id);
 
-      const responseBody = utils.buildResponse(deleteProduct); 
+      const responseBody = utils.buildResponse(deleteProduct);
       
       res.status(201).json(responseBody);
     } catch (error) {

@@ -17,7 +17,7 @@ productRouter.get(
 );
 
 productRouter.delete(
-  '/:name',
+  '/:id',
   productMiddleware.checkDeletable('params'),
   productController.deleteProduct
 );
