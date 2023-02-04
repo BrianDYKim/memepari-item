@@ -10,6 +10,16 @@ const orderService = {
 
     return entityToDetailResponse(createResult);
   },
+  async findOrderById(id) {
+    const foundOrder = await orderDao.findById(id);
+
+    return entityToDetailResponse(foundOrder);
+  }, 
+  async deleteOrderById(id) {
+    const deleteResult = await orderDao.deleteById(id);
+
+    return true;
+  }
 };
 
 function entityToDetailResponse(order) {

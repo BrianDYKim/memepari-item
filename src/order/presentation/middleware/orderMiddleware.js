@@ -1,6 +1,7 @@
 const { AppError } = require('../../../misc/AppError');
 const { commonErrors } = require('../../../misc/commonErrors');
 const { productService } = require('../../../product/application');
+const { orderService } = require('../../application');
 
 const checkCreatable = (from) => async (req, res, next) => {
   const { totalCount, totalPrice, items } = req[from];
@@ -48,6 +49,34 @@ const checkCreatable = (from) => async (req, res, next) => {
         commonErrors.inputError,
         400,
         '물품의 총 가격이 일치하지 않습니다'
+      )
+    );
+  }
+
+  next();
+};
+
+const checkDeletable = (from) => async (req, res, next) => {
+  const { id } = req[from];
+
+  if (id === undefined || id.length === 0) {
+    next(
+      new AppError(
+        commonErrors.inputError,
+        400,
+        `${from}: 올바르지 않은 주문 식별자입니다.`
+      )
+    );
+  }
+
+  const foundOrder = await orderService.findOrderById(id);
+
+  if (!foundOrder) {
+    next(
+      new AppError(
+        commonErrors.resourceNotFoundError,
+        400,
+        `${from}: 존재하지 않는 주문입니다.`
       )
     );
   }
@@ -131,4 +160,5 @@ async function aggregateProductsInfo(items, next) {
 
 module.exports = {
   checkCreatable,
+  checkDeletable,
 };
