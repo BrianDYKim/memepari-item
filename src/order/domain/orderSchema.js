@@ -12,9 +12,9 @@ const orderSchema = new Schema(
     },
     items: [
       {
-        categoryId: {
+        productId: {
           type: Schema.Types.ObjectId,
-          ref: 'Category',
+          ref: 'Product',
         },
         name: {
           type: String,
@@ -34,4 +34,4 @@ const orderSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Order', orderSchema);
+module.exports = model('Order', orderSchema);

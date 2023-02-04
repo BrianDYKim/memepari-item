@@ -66,7 +66,9 @@ const productService = {
     return true;
   },
   async findById(id) {
-    return await productDao.findById(id);
+    const foundProduct = await productDao.findById(id);
+
+    return entityToDetailResponse(foundProduct);
   }
 };
 

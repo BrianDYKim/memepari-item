@@ -29,7 +29,7 @@ async function createApp() {
   // 여러분들이 정의하는 Router가 들어갈 자리
   expressApp.use('/api/v1/categories', categoryRouter);
   expressApp.use('/api/v1/products', productRouter);
-  expressApp.use('/api/vi/orders', orderRouter);
+  expressApp.use('/api/v1/orders', orderRouter);
 
   // 의도치 않은 주소로 들어오는 요청들은 모두 에러 처리를 해주면된다
   expressApp.use((req, res, next) => {
