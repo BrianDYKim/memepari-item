@@ -35,7 +35,17 @@ const categoryDao = {
     };
 
     return await Category.findOneAndUpdate({id}, updateCategory);
-  }
+  },
+
+  async updateProductCountById(id) {
+    const targetCategory = await Category.findById(id);
+
+    const updateCategory = {
+      productCount: targetCategory.productCount + 1,
+    }
+
+    return await Category.findOneAndUpdate({id}, updateCategory);
+  },
 };
 
 module.exports = categoryDao;
