@@ -1,4 +1,5 @@
 const { categoryDao } = require('../domain');
+const {productDao} = require('../../product/domain');
 
 const categoryService = {
   async findById(id) {
@@ -53,6 +54,12 @@ const categoryService = {
 
 
     return await categoryDao.updateOneById({id, newName, description});
+  },
+
+  async updateProductCount(categoryId) {
+
+
+    return await categoryDao.updateProductCountById(categoryId)
   },
 };
 

@@ -2,6 +2,7 @@ const utils = require('../../../misc/utils');
 const { AppError } = require('../../../misc/AppError');
 const { commonErrors } = require('../../../misc/commonErrors');
 const { productService } = require('../../application');
+const {categoryService} = require('../../../category/application');
 
 const productController = {
   async findAllProduct(req, res, next) {
@@ -49,6 +50,9 @@ const productController = {
       );
 
       const responseBody = utils.buildResponse(createdProductResponse);
+      
+      const categoryId = category;
+      await categoryService.updateProductCount(categoryId);
 
       res.status(201).json(responseBody);
     } catch (error) {
