@@ -67,13 +67,31 @@ const productService = {
   },
   async findById(id) {
     return await productDao.findById(id);
-  }
+  },
 };
 
 function entityToDetailResponse(product) {
-  const {id, name, price, description, detailDescription, author, imageUrl, category} = product;
+  const {
+    id,
+    name,
+    price,
+    description,
+    detailDescription,
+    author,
+    imageUrl,
+    category,
+  } = product;
 
-  const detailProductResponse = { id, name, price, description, detailDescription, author, imageUrl, category};
+  const detailProductResponse = {
+    id,
+    name,
+    price,
+    description,
+    detailDescription,
+    author,
+    imageUrl,
+    category,
+  };
 
   return detailProductResponse;
 }
