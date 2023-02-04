@@ -30,10 +30,17 @@ const productDao = {
     const foundProduct = await Product.findOne({
       name,
     });
-    return foundProduct ? true : false; 
+    return foundProduct ? true : false;
   },
 
   async getOneById(id) {
+    return await Product.findById(id);
+  },
+
+  async deleteById(id) {
+    return await Product.deleteOne({ id });
+  },
+  async findById(id) {
     return await Product.findById(id);
   },
 };
