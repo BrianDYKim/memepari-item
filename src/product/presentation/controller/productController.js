@@ -2,7 +2,7 @@ const utils = require('../../../misc/utils');
 const { AppError } = require('../../../misc/AppError');
 const { commonErrors } = require('../../../misc/commonErrors');
 const { productService } = require('../../application');
-const {categoryService} = require('../../../category/application');
+const { categoryService } = require('../../../category/application');
 
 const productController = {
   async findAllProduct(req, res, next) {
@@ -44,15 +44,14 @@ const productController = {
         imageUrl,
         category,
       };
-      
+
       const createdProductResponse = await productService.createNewProduct(
         createProductRequest
       );
-
-      const responseBody = utils.buildResponse(createdProductResponse);
-      
       const categoryId = category;
       await categoryService.updateProductCount(categoryId);
+
+      const responseBody = utils.buildResponse(createdProductResponse);
 
       res.status(201).json(responseBody);
     } catch (error) {
@@ -63,22 +62,22 @@ const productController = {
     try {
       const { id } = req.params;
       const foundProduct = await productService.getProduct(id);
-    
-      const responseBody = utils.buildResponse(foundProduct)
-    
+
+      const responseBody = utils.buildResponse(foundProduct);
+
       res.status(201).json(responseBody);
     } catch (error) {
       next(error);
     }
   },
 
-  async deleteProduct(req, res, next) { 
+  async deleteProduct(req, res, next) {
     try {
-      const { id } = req.params; 
+      const { id } = req.params;
       const deleteProduct = await productService.deleteProductById(id);
 
       const responseBody = utils.buildResponse(deleteProduct);
-      
+
       res.status(201).json(responseBody);
     } catch (error) {
       next(error);

@@ -1,5 +1,5 @@
 const { categoryDao } = require('../domain');
-const {productDao} = require('../../product/domain');
+const { productDao } = require('../../product/domain');
 
 const categoryService = {
   async findById(id) {
@@ -48,18 +48,23 @@ const categoryService = {
     return await categoryDao.deleteOneById(id);
   },
 
-  async updateCategoryByName({oldName, newName, description}) {
+  async updateCategoryByName({ oldName, newName, description }) {
     const result = await categoryDao.findOneByName(oldName);
     const id = result.id;
 
-
-    return await categoryDao.updateOneById({id, newName, description});
+    return await categoryDao.updateOneById({ id, newName, description });
   },
 
   async updateProductCount(categoryId) {
+    const targetCategory = await categoryDao.findOneById(categoryId);
+    const updateCategory = {
+      productCount: targetCategory.productCount + 1,
+    };
 
-
-    return await categoryDao.updateProductCountById(categoryId)
+    return await categoryDao.updateProductCountById({
+      categoryId,
+      updateCategory,
+    });
   },
 };
 

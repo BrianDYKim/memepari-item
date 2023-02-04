@@ -26,7 +26,7 @@ const categoryDao = {
     return await Category.deleteOne({ id });
   },
 
-  async updateOneById({id, newName, description}) {
+  async updateOneById({ id, newName, description }) {
     const targetCategory = await Category.findById(id);
 
     const updateCategory = {
@@ -34,17 +34,11 @@ const categoryDao = {
       description: description ? description : targetCategory.description,
     };
 
-    return await Category.findOneAndUpdate({id}, updateCategory);
+    return await Category.findOneAndUpdate({ id }, updateCategory);
   },
 
-  async updateProductCountById(id) {
-    const targetCategory = await Category.findById(id);
-
-    const updateCategory = {
-      productCount: targetCategory.productCount + 1,
-    }
-
-    return await Category.findOneAndUpdate({id}, updateCategory);
+  async updateProductCountById({ id, updateCategory }) {
+    return await Category.findOneAndUpdate({ id }, updateCategory);
   },
 };
 
