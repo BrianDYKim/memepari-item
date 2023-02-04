@@ -37,16 +37,7 @@ const productService = {
       category,
     });
 
-    const createdProductResponse = {
-      id: result.id,
-      name: result.name,
-      price: result.price,
-      description: result.description,
-      detailDescription: result.detailDescription,
-      author: result.author,
-      imageUrl: result.imageUrl,
-      category: result.category,
-    };
+    const createdProductResponse = entityToDetailResponse(result);
 
     return createdProductResponse;
   },
@@ -54,7 +45,6 @@ const productService = {
   async isAlreadyExistProductByName(name) {
     return await productDao.existsByName(name);
   },
-  // getProduct 함수 만들기
   async getProduct(id) {
     const result = await productDao.getOneById(id);
 
@@ -66,12 +56,44 @@ const productService = {
       );
     }
 
-    const {name, price, description, detailDescription, author, imageUrl, category} = result;
-
-    const detailProductResponse = { name, price, description, detailDescription, author, imageUrl, category};
+    const detailProductResponse = entityToDetailResponse(result);
 
     return detailProductResponse;
   },
+  async deleteProductById(id) {
+    const deleteResult = await productDao.deleteById(id);
+
+    return true;
+  },
+  async findById(id) {
+    return await productDao.findById(id);
+  },
 };
+
+function entityToDetailResponse(product) {
+  const {
+    id,
+    name,
+    price,
+    description,
+    detailDescription,
+    author,
+    imageUrl,
+    category,
+  } = product;
+
+  const detailProductResponse = {
+    id,
+    name,
+    price,
+    description,
+    detailDescription,
+    author,
+    imageUrl,
+    category,
+  };
+
+  return detailProductResponse;
+}
 
 module.exports = productService;
