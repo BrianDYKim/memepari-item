@@ -78,7 +78,8 @@ const productService = {
       detailDescription,
       imageUrl,
     });
-    return updatedProduct;
+    
+    return entityToDetailResponse(updatedProduct);
   },
 };
 

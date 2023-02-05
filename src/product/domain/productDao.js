@@ -1,5 +1,5 @@
-const Product = require('./productSchema')
-const utils = require('../../misc/utils')
+const Product = require('./productSchema');
+const utils = require('../../misc/utils');
 
 const productDao = {
   async findAll() {
@@ -46,24 +46,12 @@ const productDao = {
     return await Product.findById(id);
   },
 
-  async updateOneById( id, toUpdate ) {
-    const sanitizedToUpdate = utils.sanitizeObject({
-      name: toUpdate.name,
-      price: toUpdate.price,
-      description: toUpdate.description,
-      detailDescription: toUpdate.detailDescription,
-      imageUrl: toUpdate.imageUrl,
-    });
+  async updateOneById(id, changeQuery) {
+    const targetProduct = await Product.findById(id);
 
-    const plainUpdateProduct = await Product.updateOne(
-      { id }, 
-      sanitizedToUpdate, 
-      {
-        runValidators: true,
-        new: true,
-      }
-    ).lean();
-    return plainUpdateProduct;
+    const updatedProduct = utils.changeModel(targetProduct, changeQuery);
+
+    return await updatedProduct.save();
   },
 };
 

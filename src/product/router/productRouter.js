@@ -16,16 +16,12 @@ productRouter.get(
   productController.getProduct
 );
 
-productRouter.delete(
-  '/:id',
-  productMiddleware.checkDeletable('params'),
-);
-
+productRouter.delete('/:id', productMiddleware.checkDeletable('params'));
 
 productRouter.put(
-  "/:id", 
-  productMiddleware.checkUpdateProduct('body'),
-  productController.putProduct
+  '/:id',
+  productMiddleware.checkUpdatable('body'),
+  productController.updateProduct
 );
 
 module.exports = productRouter;

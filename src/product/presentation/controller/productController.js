@@ -83,18 +83,12 @@ const productController = {
     }
   },
 
-
-  async putProduct(req, res, next) {
+  async updateProduct(req, res, next) {
     try {
       const { id } = req.params;
-      const {
-        name,
-        price,
-        description,
-        detailDescription,
-        imageUrl,
-      } = req.body;
-      
+      const { name, price, description, detailDescription, imageUrl } =
+        req.body;
+
       const product = await productService.updateProductById(id, {
         name,
         price,
@@ -110,7 +104,6 @@ const productController = {
       next(error);
     }
   },
-
 };
 
 module.exports = productController;

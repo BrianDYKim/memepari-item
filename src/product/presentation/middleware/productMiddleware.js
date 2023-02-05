@@ -1,4 +1,5 @@
 const { productService } = require('../../application');
+const utils = require('../../../misc/utils');
 const { AppError } = require('../../../misc/AppError');
 const { commonErrors } = require('../../../misc/commonErrors');
 
@@ -173,15 +174,8 @@ const checkDeletable = (from) => async (req, res, next) => {
   next();
 };
 
-
-const checkUpdateProduct = (from) => async (req, res, next) => {
-  const {
-    name,
-    price,
-    description,
-    detailDescription,
-    imageUrl,
-  } = req[from];
+const checkUpdatable = (from) => async (req, res, next) => {
+  const { name, price, description, detailDescription, imageUrl } = req[from];
   if (
     name === undefined &&
     price === undefined &&
@@ -193,18 +187,22 @@ const checkUpdateProduct = (from) => async (req, res, next) => {
       new AppError(
         commonErrors.inputError,
         400,
-        `${from}: name, price, description, detilDescription, author, imageUrl, category 중 최소 하나는 필요합니다.`
+        `${from}: name, price, description, detailDescription, imageUrl 중 최소 하나는 필요합니다.`
       )
     );
   }
+
+  // 존재하는 string이면 길이 검사를 수행하는 함수 호출
+  utils.validateStringsIfExists({name, description, detailDescription, imageUrl}, from, next);
+  // 존재하는 number이면 0 이하의 값을 가지는지를 검사하는 함수 호출
+  utils.validateNumbersIfExists({price}, from, next);
+
   next();
 };
-
-
 
 module.exports = {
   checkCreatable,
   checkProductId,
   checkDeletable,
-  checkUpdateProduct
+  checkUpdatable,
 };
