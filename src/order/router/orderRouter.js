@@ -13,6 +13,11 @@ orderRouter.delete(
   orderMiddleware.checkDeletable('params'),
   orderController.deleteOrder
 );
+orderRouter.put(
+  '/cancel',
+  orderMiddleware.checkCancellable('query'), 
+  orderController.cancelOrder
+)
 
 module.exports = {
   orderRouter,

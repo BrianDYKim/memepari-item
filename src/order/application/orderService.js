@@ -1,6 +1,7 @@
 const { AppError } = require('../../misc/AppError');
 const { commonErrors } = require('../../misc/commonErrors');
 const { orderDao } = require('../domain');
+const Status = require('../domain/vo/status.vo');
 
 const orderService = {
   async createOrder({ totalCount, totalPrice, items }) {
@@ -22,10 +23,15 @@ const orderService = {
 
     return true;
   },
+  async cancelOrder(id) {
+    const cancelOrderResult = await orderDao.changeStatus({id, status: Status.CANCELLED});
+    
+    return entityToDetailResponse(cancelOrderResult);
+  }
 };
 
 function entityToDetailResponse(order) {
-  const { totalCount, totalPrice, items, status } = order;
+  const { id, totalCount, totalPrice, items, status } = order;
 
   const responseItems = items.map((item) => ({
     productId: item.productId,
@@ -34,7 +40,7 @@ function entityToDetailResponse(order) {
     count: item.count,
   }));
 
-  return { totalCount, totalPrice, items: responseItems, status };
+  return { id, totalCount, totalPrice, items: responseItems, status };
 }
 
 module.exports = orderService;
