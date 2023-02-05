@@ -21,9 +21,9 @@ const orderDao = {
   async changeStatus({ id, status }) {
     const targetOrder = await Order.findById(id);
 
-    const changeStatusQuery = { status };
+    targetOrder.status = status;
 
-    return await Order.findOneAndUpdate({ id }, changeStatusQuery);
+    return await targetOrder.save();
   },
 };
 
