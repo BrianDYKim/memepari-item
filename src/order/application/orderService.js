@@ -1,6 +1,7 @@
 const { AppError } = require('../../misc/AppError');
 const { commonErrors } = require('../../misc/commonErrors');
 const { orderDao } = require('../domain');
+const Status = require('../domain/vo/status.vo');
 
 const orderService = {
   async createOrder({ totalCount, totalPrice, items }) {
@@ -22,6 +23,11 @@ const orderService = {
 
     return true;
   },
+  async cancelOrder(id) {
+    const cancelOrderResult = await orderDao.changeStatus({id, status: Status.CANCELLED});
+    
+    return entityToDetailResponse(cancelOrderResult);
+  }
 };
 
 function entityToDetailResponse(order) {

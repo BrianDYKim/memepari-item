@@ -2,6 +2,7 @@ const { AppError } = require('../../../misc/AppError');
 const { commonErrors } = require('../../../misc/commonErrors');
 const { productService } = require('../../../product/application');
 const { orderService } = require('../../application');
+const Status = require('../../domain/vo/status.vo');
 
 const checkCreatable = (from) => async (req, res, next) => {
   const { totalCount, totalPrice, items } = req[from];
@@ -77,6 +78,46 @@ const checkDeletable = (from) => async (req, res, next) => {
         commonErrors.resourceNotFoundError,
         400,
         `${from}: 존재하지 않는 주문입니다.`
+      )
+    );
+  }
+
+  next();
+};
+
+const checkCancellable = (from) => async (req, res, next) => {
+  const { id } = req[from];
+
+  if (!id || id.length === 0) {
+    next(
+      new AppError(
+        commonErrors.inputError,
+        400,
+        `${from}: 주문 id가 식별되지 않았습니다.`
+      )
+    );
+  }
+
+  // 실제 존재하는 주문인지 확인
+  const foundOrder = await orderService.findOrderById(id);
+
+  if (!foundOrder) {
+    next(
+      new AppError(
+        commonErrors.resourceNotFoundError, 
+        400, 
+        `${from}: 주문이 존재하지 않습니다.`
+      )
+    );
+  }
+
+  // READY 상태인 주문만 취소 가능하다
+  if (foundOrder.status !== Status.READY) {
+    next(
+      new AppError(
+        commonErrors.requestValidationError, 
+        400, 
+        `준비중인 주문만 취소 가능합니다.`
       )
     );
   }
@@ -161,4 +202,5 @@ async function aggregateProductsInfo(items, next) {
 module.exports = {
   checkCreatable,
   checkDeletable,
+  checkCancellable,
 };

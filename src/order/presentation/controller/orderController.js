@@ -24,10 +24,23 @@ const orderController = {
   async deleteOrder(req, res, next) {
     try {
       const { id } = req.param;
-      
+
       const deleteResult = await orderService.deleteOrderById(id);
 
       const responseBody = utils.buildResponse(deleteResult);
+
+      res.json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
+  async cancelOrder(req, res, next) {
+    try {
+      const { id } = req.query;
+
+      const cancelResult = await orderService.cancelOrder(id);
+
+      const responseBody = utils.buildResponse(cancelResult);
 
       res.json(responseBody);
     } catch (error) {
