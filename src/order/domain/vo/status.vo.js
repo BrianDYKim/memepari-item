@@ -1,5 +1,6 @@
 module.exports = {
     READY: "Ready", 
     ON_DELIVERY: "Delivery", 
-    ARRIVED: "Arrived"
+    ARRIVED: "Arrived", 
+    CANCELLED: "Cancelled"
 };
