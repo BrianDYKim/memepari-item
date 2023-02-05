@@ -101,8 +101,8 @@ const checkDeletable = (from) => async (req, res, next) => {
   next();
 };
 
-const checkUpdatable = async (req, res, next) => {
-  const oldName = req.params.name;
+const checkUpdatable = (from) => async (req, res, next) => {
+  const oldName = req[from].name;
   const { name: newName, description } = req.body;
 
   if (oldName === undefined || oldName.length === 0) {

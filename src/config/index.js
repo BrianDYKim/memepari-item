@@ -9,6 +9,8 @@ console.log(
   `어플리케이션을 다음의 환경으로 시작합니다: ${process.env.NODE_ENV}`
 );
 
+process.env.AUTH_SERVER_URL = process.env.AUTH_SERVER_URL ?? 'http://localhost:4000/api/users'
+
 // .env 파일이 정의되어있는지?
 const envFound = dotenv.config();
 if (envFound.error) {
@@ -26,4 +28,5 @@ module.exports = {
   applicationName: process.env.APPLICATION_NAME || 'app',
   port: parseInt(process.env.PORT ?? '3000', 10),
   mongoDbUrl: mongoDbUrl,
+  authServerUrl: process.env.AUTH_SERVER_URL
 };
