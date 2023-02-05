@@ -21,7 +21,7 @@ const categoryController = {
       next(error);
     }
   },
-  
+
   async createCategory(req, res, next) {
     try {
       const { name, description } = req.body;
@@ -53,13 +53,17 @@ const categoryController = {
 
   async updateCategory(req, res, next) {
     try {
-      const { name:oldName } = req.params;
-      const { name:newName, description} = req.body;
-      await categoryService.updateCategoryByName({oldName, newName, description});
+      const { name: oldName } = req.params;
+      const { name: newName, description } = req.body;
+      await categoryService.updateCategoryByName({
+        oldName,
+        newName,
+        description,
+      });
 
       const responseBody = utils.buildResponse('OK');
 
-      res.status(201).json(responseBody);
+      return res.status(201).json(responseBody);
     } catch (error) {
       next(error);
     }
