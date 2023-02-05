@@ -18,6 +18,13 @@ const orderDao = {
   async deleteById(id) {
     return await Order.deleteOne({ id });
   },
+  async changeStatus({ id, status }) {
+    const targetOrder = await Order.findById(id);
+
+    targetOrder.status = status;
+
+    return await targetOrder.save();
+  },
 };
 
 module.exports = orderDao;
