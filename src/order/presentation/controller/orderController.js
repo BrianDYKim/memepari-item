@@ -15,7 +15,20 @@ const orderController = {
       });
 
       const responseBody = utils.buildResponse(createdOrderResponse);
+
+      res.json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
+  async deleteOrder(req, res, next) {
+    try {
+      const { id } = req.param;
       
+      const deleteResult = await orderService.deleteOrderById(id);
+
+      const responseBody = utils.buildResponse(deleteResult);
+
       res.json(responseBody);
     } catch (error) {
       next(error);

@@ -12,6 +12,12 @@ const orderDao = {
 
     return await newOrder.save();
   },
+  async findById(id) {
+    return await Order.findById(id);
+  },
+  async deleteById(id) {
+    return await Order.deleteOne({ id });
+  },
 };
 
 module.exports = orderDao;
