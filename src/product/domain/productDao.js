@@ -1,4 +1,5 @@
 const Product = require('./productSchema');
+const utils = require('../../misc/utils');
 
 const productDao = {
   async findAll() {
@@ -40,8 +41,17 @@ const productDao = {
   async deleteById(id) {
     return await Product.deleteOne({ id });
   },
+
   async findById(id) {
     return await Product.findById(id);
+  },
+
+  async updateOneById(id, changeQuery) {
+    const targetProduct = await Product.findById(id);
+
+    const updatedProduct = utils.changeModel(targetProduct, changeQuery);
+
+    return await updatedProduct.save();
   },
 };
 
