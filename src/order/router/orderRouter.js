@@ -9,8 +9,8 @@ orderRouter.post(
   orderController.createOrder
 );
 orderRouter.delete(
-  '/',
-  orderMiddleware.checkDeletable('param'),
+  '/:id',
+  orderMiddleware.checkDeletable('params'),
   orderController.deleteOrder
 );
 

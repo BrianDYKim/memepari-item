@@ -25,7 +25,7 @@ const orderController = {
     try {
       const { id } = req.param;
       
-      const deleteResult = orderService.deleteOrderById(id);
+      const deleteResult = await orderService.deleteOrderById(id);
 
       const responseBody = utils.buildResponse(deleteResult);
 
