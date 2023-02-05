@@ -1,5 +1,6 @@
 const { AppError } = require('../../../misc/AppError');
 const { commonErrors } = require('../../../misc/commonErrors');
+const { productService } = require('../../../product/application');
 const { categoryService } = require('../../application');
 
 const checkCreatable = (from) => async (req, res, next) => {
@@ -102,7 +103,7 @@ const checkDeletable = (from) => async (req, res, next) => {
 
 const checkUpdatable = async (req, res, next) => {
   const oldName = req.params.name;
-  const {name:newName, description} = req.body;
+  const { name: newName, description } = req.body;
 
   if (oldName === undefined || oldName.length === 0) {
     next(
@@ -146,7 +147,10 @@ const checkUpdatable = async (req, res, next) => {
     );
   }
 
-  if (description !== undefined && (description.length === 0 || description.length > 150)) {
+  if (
+    description !== undefined &&
+    (description.length === 0 || description.length > 150)
+  ) {
     next(
       new AppError(
         commonErrors.inputError,
@@ -155,6 +159,7 @@ const checkUpdatable = async (req, res, next) => {
       )
     );
   }
+  next();
 
   const isDupicatedName = await categoryService.isAlreadyExistCategoryByName(
     newName
@@ -169,9 +174,9 @@ const checkUpdatable = async (req, res, next) => {
       )
     );
   }
-
   next();
 };
+
 
 module.exports = {
   checkCreatable,

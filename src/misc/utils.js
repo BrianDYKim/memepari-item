@@ -1,3 +1,14 @@
+
+function sanitizeObject(obj) {
+  const result = Object.entries(obj).reduce((map, [key, value]) => {
+    if (value !== undefined) {
+      map[key] = value;
+    }
+    return map;
+  }, {});
+  return result;
+}
+
 const buildResponse = (data, errorMessage) => {
   return {
     error: errorMessage ?? null,
@@ -7,4 +18,5 @@ const buildResponse = (data, errorMessage) => {
 
 module.exports = {
   buildResponse,
+  sanitizeObject
 };

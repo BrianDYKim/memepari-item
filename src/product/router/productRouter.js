@@ -19,7 +19,13 @@ productRouter.get(
 productRouter.delete(
   '/:id',
   productMiddleware.checkDeletable('params'),
-  productController.deleteProduct
+);
+
+
+productRouter.put(
+  "/:id", 
+  productMiddleware.checkUpdateProduct('body'),
+  productController.putProduct
 );
 
 module.exports = productRouter;

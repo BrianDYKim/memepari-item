@@ -173,8 +173,38 @@ const checkDeletable = (from) => async (req, res, next) => {
   next();
 };
 
+
+const checkUpdateProduct = (from) => async (req, res, next) => {
+  const {
+    name,
+    price,
+    description,
+    detailDescription,
+    imageUrl,
+  } = req[from];
+  if (
+    name === undefined &&
+    price === undefined &&
+    description === undefined &&
+    detailDescription === undefined &&
+    imageUrl === undefined
+  ) {
+    next(
+      new AppError(
+        commonErrors.inputError,
+        400,
+        `${from}: name, price, description, detilDescription, author, imageUrl, category 중 최소 하나는 필요합니다.`
+      )
+    );
+  }
+  next();
+};
+
+
+
 module.exports = {
   checkCreatable,
   checkProductId,
   checkDeletable,
+  checkUpdateProduct
 };

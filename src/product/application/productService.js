@@ -1,6 +1,7 @@
 const { AppError } = require('../../misc/AppError');
 const { commonErrors } = require('../../misc/commonErrors');
 const { productDao } = require('../domain');
+const { update } = require('../domain/productSchema');
 
 const productService = {
   async findAllProducts() {
@@ -10,9 +11,7 @@ const productService = {
       id: product.id,
       name: product.name,
       price: product.price,
-      author: product.author,
       imageUrl: product.imageUrl,
-      category: product.category,
     }));
 
     return readProductResponseList;
@@ -23,18 +22,14 @@ const productService = {
     price,
     description,
     detailDescription,
-    author,
     imageUrl,
-    category,
   }) {
     const result = await productDao.createProduct({
       name,
       price,
       description,
       detailDescription,
-      author,
       imageUrl,
-      category,
     });
 
     const createdProductResponse = entityToDetailResponse(result);
@@ -66,16 +61,53 @@ const productService = {
     return true;
   },
   async findById(id) {
-    return await productDao.findById(id);
-  }
+    const foundProduct = await productDao.findById(id);
+
+    return entityToDetailResponse(foundProduct);
+  },
+
+
+  async updateProductById(
+    id,
+    { name, price, description, detailDescription, imageUrl }
+  ) {
+    const updatedProduct = await productDao.updateOneById(id, {
+      name,
+      price,
+      description,
+      detailDescription,
+      imageUrl,
+    });
+    return updatedProduct;
+  },
 };
 
-function entityToDetailResponse(product) {
-  const {id, name, price, description, detailDescription, author, imageUrl, category} = product;
 
-  const detailProductResponse = { id, name, price, description, detailDescription, author, imageUrl, category};
+function entityToDetailResponse(product) {
+  const {
+    id,
+    name,
+    price,
+    description,
+    detailDescription,
+    author,
+    imageUrl,
+    category,
+  } = product;
+
+  const detailProductResponse = {
+    id,
+    name,
+    price,
+    description,
+    detailDescription,
+    author,
+    imageUrl,
+    category,
+  };
 
   return detailProductResponse;
-}
+};
+
 
 module.exports = productService;

@@ -1,4 +1,5 @@
-const Product = require('./productSchema');
+const Product = require('./productSchema')
+const utils = require('../../misc/utils')
 
 const productDao = {
   async findAll() {
@@ -40,8 +41,29 @@ const productDao = {
   async deleteById(id) {
     return await Product.deleteOne({ id });
   },
+
   async findById(id) {
     return await Product.findById(id);
+  },
+
+  async updateOneById( id, toUpdate ) {
+    const sanitizedToUpdate = utils.sanitizeObject({
+      name: toUpdate.name,
+      price: toUpdate.price,
+      description: toUpdate.description,
+      detailDescription: toUpdate.detailDescription,
+      imageUrl: toUpdate.imageUrl,
+    });
+
+    const plainUpdateProduct = await Product.updateOne(
+      { id }, 
+      sanitizedToUpdate, 
+      {
+        runValidators: true,
+        new: true,
+      }
+    ).lean();
+    return plainUpdateProduct;
   },
 };
 
