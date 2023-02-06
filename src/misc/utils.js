@@ -23,6 +23,17 @@ const buildResponse = (data, errorMessage) => {
   };
 };
 
+const buildPaginationResponse = (data, totalPage, totalCount, page, count, errorMessage) => {
+  return {
+    totalPage, 
+    totalCount, 
+    data, 
+    page, 
+    count, 
+    error: errorMessage ?? null
+  }
+}
+
 /**
  * 검증할 변수들이 존재하며, 존재한다면 길이가 0이 아닌지 검증하는 함수
  * @param {Object} validateProperties
@@ -105,6 +116,7 @@ const validateNumbersIfExists = (validateProperties, from, next) => {
 
 module.exports = {
   buildResponse,
+  buildPaginationResponse, 
   changeModel,
   validateStringsWhetherExists, 
   validateStringsIfExists,

@@ -23,6 +23,8 @@ const productService = {
     description,
     detailDescription,
     imageUrl,
+    author,
+    category,
   }) {
     const result = await productDao.createProduct({
       name,
@@ -30,6 +32,8 @@ const productService = {
       description,
       detailDescription,
       imageUrl,
+      author,
+      category,
     });
 
     const createdProductResponse = entityToDetailResponse(result);
@@ -76,11 +80,24 @@ const productService = {
       detailDescription,
       imageUrl,
     });
-    
+
     return entityToDetailResponse(updatedProduct);
   },
-};
+  async getProductsByCategoryIdWithPagination(categoryId, page, limit) {
+    const { totalCount, totalPage, foundProducts } =
+      await productDao.getProductsByCategoryIdWithPagination(
+        categoryId,
+        page,
+        limit
+      );
 
+    const simpleResponses = foundProducts.map((product) =>
+      entityToSimpleResponse(product)
+    );
+
+    return { totalCount, totalPage, result: simpleResponses };
+  },
+};
 
 function entityToDetailResponse(product) {
   const {
@@ -106,7 +123,14 @@ function entityToDetailResponse(product) {
   };
 
   return detailProductResponse;
-};
+}
 
+function entityToSimpleResponse(product) {
+  const { id, name, price, description, author, imageUrl } = product;
+
+  const simpleResponse = { id, name, price, description, author, imageUrl };
+
+  return simpleResponse;
+}
 
 module.exports = productService;
