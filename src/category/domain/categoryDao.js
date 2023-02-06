@@ -39,6 +39,12 @@ const categoryDao = {
   async updateProductCountById({ id, updateCategory }) {
     return await Category.findOneAndUpdate({ id }, updateCategory);
   },
+  
+  async findProduct(){
+    const products = await Product.find({}).populate('Category');
+  
+    return products;
+  },
 };
 
 module.exports = categoryDao;
