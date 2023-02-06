@@ -41,9 +41,9 @@ const categoryController = {
   async deleteCategory(req, res, next) {
     try {
       const { name } = req.params;
-      await categoryService.deleteCategoryByName(name);
+      const deleteResult = await categoryService.deleteCategoryByName(name);
 
-      const responseBody = utils.buildResponse('OK');
+      const responseBody = utils.buildResponse(deleteResult);
 
       res.status(201).json(responseBody);
     } catch (error) {

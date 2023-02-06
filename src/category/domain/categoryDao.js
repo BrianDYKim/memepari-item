@@ -1,4 +1,5 @@
 const Category = require('./categorySchema');
+const utils = require('../../misc/utils');
 
 const categoryDao = {
   async findAll() {
@@ -22,24 +23,17 @@ const categoryDao = {
     return await Category.findById(id);
   },
 
-  async deleteOneById(id) {
-    return await Category.deleteOne({ id });
-  },
-
   async updateOneById({ id, newName, description }) {
     const targetCategory = await Category.findById(id);
 
-    const updateCategory = {
-      name: newName ? newName : targetCategory.name,
-      description: description ? description : targetCategory.description,
-    };
+    utils.changeModel(targetCategory, { name: newName, description });
 
-    return await Category.findOneAndUpdate({ id }, updateCategory);
+    return await targetCategory.save();
   },
-  async updateProductCountById(categoryId) {
+  async updateProductCountById(categoryId, count) {
     const targetProduct = await Category.findById(categoryId);
 
-    targetProduct.productCount = targetProduct.productCount + 1;
+    targetProduct.productCount = targetProduct.productCount + count;
 
     return await targetProduct.save();
   },

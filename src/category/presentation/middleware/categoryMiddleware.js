@@ -7,52 +7,26 @@ const utils = require('../../../misc/utils');
 const checkCreatable = (from) => async (req, res, next) => {
   const { name, description } = req[from];
 
-  if (name === undefined || name.length === 0) {
-    next(
-      new AppError(
-        commonErrors.inputError,
-        400,
-        `${from}: category의 이름은 필수 값입니다`
-      )
-    );
-  }
+  // name, description의 field 유효성 검사
+  utils.validateStringsWhetherExists({ name, description }, from, next);
 
-  if (description === undefined || description.length === 0) {
-    next(
-      new AppError(
-        commonErrors.inputError,
-        400,
-        `${from}: category의 설명은 필수 값입니다`
-      )
-    );
-  }
-
-  if (name.length > 30) {
-    next(
-      new AppError(
-        commonErrors.inputError,
-        400,
-        `${from}: category의 이름은 30글자 이내로 작성 부탁드립니다`
-      )
-    );
-  }
-
-  if (description.length > 150) {
-    next(
-      new AppError(
-        commonErrors.inputError,
-        400,
-        `${from}: category의 설명은 150글자 이내로 작성 부탁드립니다`
-      )
-    );
-  }
+  // name, description이 각각 주어진 길이보다 긴지 유효성 검사 실시
+  const validateInfoList = [
+    { target: name, length: 30, targetName: 'name' },
+    { target: description, length: 150, targetName: 'description' },
+  ];
+  validateInfoList.map(
+    (validateInfo) => utils.validateStringLongerThanLength(validateInfo),
+    from,
+    next
+  );
 
   const isDupicatedName = await categoryService.isAlreadyExistCategoryByName(
     name
   );
 
   if (isDupicatedName) {
-    next(
+    return next(
       new AppError(
         commonErrors.inputError,
         400,
@@ -67,20 +41,12 @@ const checkCreatable = (from) => async (req, res, next) => {
 const checkDeletable = (from) => async (req, res, next) => {
   const { name } = req[from];
 
-  if (name === undefined || name.length === 0) {
-    next(
-      new AppError(
-        commonErrors.inputError,
-        400,
-        `${from}: category 이름이 올바르지 않습니다.`
-      )
-    );
-  }
+  utils.validateStringsWhetherExists({ name }, from, next);
 
   const foundCategory = await categoryService.findCategoryByName(name);
 
   if (!foundCategory) {
-    next(
+    return next(
       new AppError(
         commonErrors.resourceNotFoundError,
         400,
@@ -90,7 +56,7 @@ const checkDeletable = (from) => async (req, res, next) => {
   }
 
   if (foundCategory.productCount > 0) {
-    next(
+    return next(
       new AppError(
         commonErrors.remoteStorageError,
         400,
@@ -112,7 +78,7 @@ const checkUpdatable = (from) => async (req, res, next) => {
   const foundCategory = await categoryService.findCategoryByName(oldName);
 
   if (!foundCategory) {
-    next(
+    return next(
       new AppError(
         commonErrors.resourceNotFoundError,
         400,
@@ -122,7 +88,7 @@ const checkUpdatable = (from) => async (req, res, next) => {
   }
 
   if (newName === undefined && description === undefined) {
-    next(
+    return next(
       new AppError(
         commonErrors.inputError,
         400,
@@ -155,7 +121,7 @@ const checkUpdatable = (from) => async (req, res, next) => {
   );
 
   if (isDupicatedName) {
-    next(
+    return next(
       new AppError(
         commonErrors.inputError,
         400,
