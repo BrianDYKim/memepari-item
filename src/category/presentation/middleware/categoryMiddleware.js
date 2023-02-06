@@ -2,6 +2,7 @@ const { AppError } = require('../../../misc/AppError');
 const { commonErrors } = require('../../../misc/commonErrors');
 const { productService } = require('../../../product/application');
 const { categoryService } = require('../../application');
+const utils = require('../../../misc/utils');
 
 const checkCreatable = (from) => async (req, res, next) => {
   const { name, description } = req[from];
@@ -105,15 +106,8 @@ const checkUpdatable = (from) => async (req, res, next) => {
   const oldName = req[from].name;
   const { name: newName, description } = req.body;
 
-  if (oldName === undefined || oldName.length === 0) {
-    next(
-      new AppError(
-        commonErrors.inputError,
-        400,
-        `${req.params}: category 이름이 올바르지 않습니다.`
-      )
-    );
-  }
+  // oldName이 undefined 이거나, 혹은 길이가 0이면 에러를 일으키는 함수 호출
+  utils.validateStringsWhetherExists({ oldName }, from, next);
 
   const foundCategory = await categoryService.findCategoryByName(oldName);
 
@@ -137,29 +131,24 @@ const checkUpdatable = (from) => async (req, res, next) => {
     );
   }
 
-  if (newName !== undefined && (newName.length === 0 || newName.length > 30)) {
-    next(
-      new AppError(
-        commonErrors.inputError,
-        400,
-        `${req.body}: category의 이름은 30자 이내로 작성바랍니다`
-      )
+  // newName, description에 대해서 존재하는 경우 길이가 0인지 검증
+  utils.validateStringsIfExists({ newName, description }, from, next);
+
+  if (newName !== undefined) {
+    utils.validateStringLongerThanLength(
+      { target: newName, length: 30, targetName: 'newName' },
+      from,
+      next
     );
   }
 
-  if (
-    description !== undefined &&
-    (description.length === 0 || description.length > 150)
-  ) {
-    next(
-      new AppError(
-        commonErrors.inputError,
-        400,
-        `${req.body}: category의 설명은 150자 이내로 작성바랍니다`
-      )
+  if (description !== undefined) {
+    utils.validateStringLongerThanLength(
+      { target: description, length: 150, targetName: 'description' },
+      from,
+      next
     );
   }
-  next();
 
   const isDupicatedName = await categoryService.isAlreadyExistCategoryByName(
     newName
@@ -176,7 +165,6 @@ const checkUpdatable = (from) => async (req, res, next) => {
   }
   next();
 };
-
 
 module.exports = {
   checkCreatable,
