@@ -23,16 +23,23 @@ const buildResponse = (data, errorMessage) => {
   };
 };
 
-const buildPaginationResponse = (data, totalPage, totalCount, page, count, errorMessage) => {
+const buildPaginationResponse = (
+  data,
+  totalPage,
+  totalCount,
+  page,
+  count,
+  errorMessage
+) => {
   return {
-    totalPage, 
-    totalCount, 
-    data, 
-    page, 
-    count, 
-    error: errorMessage ?? null
-  }
-}
+    totalPage,
+    totalCount,
+    data,
+    page,
+    count,
+    error: errorMessage ?? null,
+  };
+};
 
 /**
  * 검증할 변수들이 존재하며, 존재한다면 길이가 0이 아닌지 검증하는 함수
@@ -43,11 +50,25 @@ const buildPaginationResponse = (data, totalPage, totalCount, page, count, error
 const validateStringsWhetherExists = (validateProperties, from, next) => {
   Object.entries(validateProperties).map(([key, value]) => {
     if (value === undefined || value.length === 0) {
-      next(
+      return next(
         new AppError(
           commonErrors.inputError,
           400,
-          `${key}: category 이름이 올바르지 않습니다.`
+          `${from}: ${key}이 올바르지 않습니다.`
+        )
+      );
+    }
+  });
+};
+
+const validateNumbersWhetherExists = (validateProperties, from, next) => {
+  Object.entries(validateProperties).map(([key, value]) => {
+    if (value === undefined) {
+      return next(
+        new AppError(
+          commonErrors.inputError,
+          400,
+          `${from}: ${key}이 올바르지 않습니다.`
         )
       );
     }
@@ -63,7 +84,7 @@ const validateStringsWhetherExists = (validateProperties, from, next) => {
 const validateStringsIfExists = (validateProperties, from, next) => {
   Object.entries(validateProperties).map(([key, value]) => {
     if (value !== undefined && value.length === 0) {
-      next(
+      return next(
         new AppError(
           commonErrors.inputError,
           400,
@@ -84,7 +105,7 @@ const validateStringLongerThanLength = (validateInfo, from, next) => {
   const { target, length, targetName } = validateInfo;
 
   if (target.length > length) {
-    next(
+    return next(
       new AppError(
         commonErrors.inputError,
         400,
@@ -103,7 +124,7 @@ const validateStringLongerThanLength = (validateInfo, from, next) => {
 const validateNumbersIfExists = (validateProperties, from, next) => {
   Object.entries(validateProperties).map(([key, value]) => {
     if (value && value <= 0) {
-      next(
+      return next(
         new AppError(
           commonErrors.inputError,
           400,
@@ -116,9 +137,10 @@ const validateNumbersIfExists = (validateProperties, from, next) => {
 
 module.exports = {
   buildResponse,
-  buildPaginationResponse, 
+  buildPaginationResponse,
   changeModel,
-  validateStringsWhetherExists, 
+  validateStringsWhetherExists,
+  validateNumbersWhetherExists,
   validateStringsIfExists,
   validateNumbersIfExists,
   validateStringLongerThanLength,

@@ -7,12 +7,9 @@ const productService = {
   async findAllProducts() {
     const allProductDocuments = await productDao.findAll();
 
-    const readProductResponseList = allProductDocuments.map((product) => ({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      imageUrl: product.imageUrl,
-    }));
+    const readProductResponseList = allProductDocuments.map((product) =>
+      entityToSimpleResponse(product)
+    );
 
     return readProductResponseList;
   },
@@ -62,12 +59,15 @@ const productService = {
   async deleteProductById(id) {
     const deleteResult = await productDao.deleteById(id);
 
-    return true;
+    console.log('delete service');
+    console.log(deleteResult);
+
+    return entityToDetailResponse(deleteResult);
   },
   async findById(id) {
     const foundProduct = await productDao.findById(id);
 
-    return entityToDetailResponse(foundProduct);
+    return foundProduct ? entityToDetailResponse(foundProduct): null;
   },
   async updateProductById(
     id,

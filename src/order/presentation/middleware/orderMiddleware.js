@@ -4,11 +4,13 @@ const { productService } = require('../../../product/application');
 const { orderService } = require('../../application');
 const Status = require('../../domain/vo/status.vo');
 
+const utils = require('../../../misc/utils');
+
 const checkCreatable = (from) => async (req, res, next) => {
   const { totalCount, totalPrice, items } = req[from];
 
   if (items === undefined || items.length === 0) {
-    next(
+    return next(
       new AppError(
         commonErrors.inputError,
         400,
@@ -23,7 +25,7 @@ const checkCreatable = (from) => async (req, res, next) => {
     totalCount === 0 ||
     totalPrice === 0
   ) {
-    next(
+    return next(
       new AppError(
         commonErrors.inputError,
         400,
@@ -35,7 +37,7 @@ const checkCreatable = (from) => async (req, res, next) => {
   const aggregateResult = await aggregateProductsInfo(items, next);
 
   if (totalCount !== aggregateResult.count) {
-    next(
+    return next(
       new AppError(
         commonErrors.inputError,
         400,
@@ -45,7 +47,7 @@ const checkCreatable = (from) => async (req, res, next) => {
   }
 
   if (totalPrice !== aggregateResult.price) {
-    next(
+    return next(
       new AppError(
         commonErrors.inputError,
         400,
@@ -60,20 +62,12 @@ const checkCreatable = (from) => async (req, res, next) => {
 const checkDeletable = (from) => async (req, res, next) => {
   const { id } = req[from];
 
-  if (id === undefined || id.length === 0) {
-    next(
-      new AppError(
-        commonErrors.inputError,
-        400,
-        `${from}: 올바르지 않은 주문 식별자입니다.`
-      )
-    );
-  }
+  utils.validateStringsWhetherExists({id}, from, next);
 
   const foundOrder = await orderService.findOrderById(id);
 
   if (!foundOrder) {
-    next(
+    return next(
       new AppError(
         commonErrors.resourceNotFoundError,
         400,
@@ -88,21 +82,13 @@ const checkDeletable = (from) => async (req, res, next) => {
 const checkCancellable = (from) => async (req, res, next) => {
   const { id } = req[from];
 
-  if (!id || id.length === 0) {
-    next(
-      new AppError(
-        commonErrors.inputError,
-        400,
-        `${from}: 주문 id가 식별되지 않았습니다.`
-      )
-    );
-  }
+  utils.validateStringsWhetherExists({id}, from, next);
 
   // 실제 존재하는 주문인지 확인
   const foundOrder = await orderService.findOrderById(id);
 
   if (!foundOrder) {
-    next(
+    return next(
       new AppError(
         commonErrors.resourceNotFoundError, 
         400, 
@@ -113,7 +99,7 @@ const checkCancellable = (from) => async (req, res, next) => {
 
   // READY 상태인 주문만 취소 가능하다
   if (foundOrder.status !== Status.READY) {
-    next(
+    return next(
       new AppError(
         commonErrors.requestValidationError, 
         400, 
@@ -133,9 +119,7 @@ const checkCancellable = (from) => async (req, res, next) => {
 async function drainProductInfo(item, next) {
   const { productId, name, price, count } = item;
 
-  if (productId === undefined || productId.length === 0) {
-    next(new AppError(commonErrors.inputError, 400, 'product의 id가 없습니다'));
-  }
+  utils.validateStringsWhetherExists({productId}, 'params', next);
 
   const realProduct = await productService.findById(productId);
 

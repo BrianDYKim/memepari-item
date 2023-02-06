@@ -3,10 +3,6 @@ const { AppError } = require('../../../misc/AppError');
 const { commonErrors } = require('../../../misc/commonErrors');
 const { productService } = require('../../application');
 const { categoryService } = require('../../../category/application');
-const {
-  getProductsByCategoryIdWithPagination,
-} = require('../../domain/productDao');
-const { util } = require('prettier');
 
 const productController = {
   async findAllProduct(req, res, next) {
@@ -54,7 +50,9 @@ const productController = {
         createProductRequest
       );
 
-      await categoryService.updateProductCount(createdProductResponse.category);
+      await categoryService.increaseProductCount(
+        createdProductResponse.category
+      );
 
       const responseBody = utils.buildResponse(createdProductResponse);
 
@@ -67,7 +65,15 @@ const productController = {
   async getProduct(req, res, next) {
     try {
       const { id } = req.query;
-      const foundProduct = await productService.getProduct(id);
+      const foundProduct = await productService.findById(id);
+
+      if (!foundProduct) {
+        throw new AppError(
+          commonErrors.resourceNotFoundError, 
+          400, 
+          '해당 품목이 존재하지 않습니다'
+        );
+      }
 
       const responseBody = utils.buildResponse(foundProduct);
 
@@ -80,9 +86,12 @@ const productController = {
   async deleteProduct(req, res, next) {
     try {
       const { id } = req.params;
-      const deleteProduct = await productService.deleteProductById(id);
+      const deleteProductResponse = await productService.deleteProductById(id);
 
-      const responseBody = utils.buildResponse(deleteProduct);
+      // category 숫자 1개 하락
+      await categoryService.decreaseProductCount(deleteProductResponse.category);
+
+      const responseBody = utils.buildResponse(deleteProductResponse);
       res.status(201).json(responseBody);
     } catch (error) {
       next(error);

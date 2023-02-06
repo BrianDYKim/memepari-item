@@ -19,9 +19,9 @@ const orderService = {
     return foundOrder ? entityToDetailResponse(foundOrder) : null;
   },
   async deleteOrderById(id) {
-    const deleteResult = await orderDao.deleteById(id);
+    const deletedOrder = await orderDao.deleteById(id);
 
-    return true;
+    return entityToDetailResponse(deletedOrder);
   },
   async cancelOrder(id) {
     const cancelOrderResult = await orderDao.changeStatus({id, status: Status.CANCELLED});

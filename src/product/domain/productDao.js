@@ -39,7 +39,8 @@ const productDao = {
   },
 
   async deleteById(id) {
-    return await Product.deleteOne({ id });
+    const foundProduct = await Product.findById(id);
+    return await foundProduct.delete();
   },
 
   async findById(id) {
