@@ -56,15 +56,7 @@ const categoryService = {
   },
 
   async updateProductCount(categoryId) {
-    const targetCategory = await categoryDao.findOneById(categoryId);
-    const updateCategory = {
-      productCount: targetCategory.productCount + 1,
-    };
-
-    return await categoryDao.updateProductCountById({
-      categoryId,
-      updateCategory,
-    });
+    return await categoryDao.updateProductCountById(categoryId);
   },
 };
 

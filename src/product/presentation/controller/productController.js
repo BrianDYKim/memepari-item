@@ -3,6 +3,10 @@ const { AppError } = require('../../../misc/AppError');
 const { commonErrors } = require('../../../misc/commonErrors');
 const { productService } = require('../../application');
 const { categoryService } = require('../../../category/application');
+const {
+  getProductsByCategoryIdWithPagination,
+} = require('../../domain/productDao');
+const { util } = require('prettier');
 
 const productController = {
   async findAllProduct(req, res, next) {
@@ -49,8 +53,8 @@ const productController = {
       const createdProductResponse = await productService.createNewProduct(
         createProductRequest
       );
-      const categoryId = category;
-      await categoryService.updateProductCount(categoryId);
+
+      await categoryService.updateProductCount(createdProductResponse.category);
 
       const responseBody = utils.buildResponse(createdProductResponse);
 
@@ -62,7 +66,7 @@ const productController = {
 
   async getProduct(req, res, next) {
     try {
-      const { id } = req.params;
+      const { id } = req.query;
       const foundProduct = await productService.getProduct(id);
 
       const responseBody = utils.buildResponse(foundProduct);
@@ -101,6 +105,30 @@ const productController = {
 
       const responseBody = utils.buildResponse(product);
       res.status(201).json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async getProductsByCategoryIdWithPagination(req, res, next) {
+    try {
+      const { categoryId, page, limit } = req.query;
+
+      const { totalPage, totalCount, result } =
+        await productService.getProductsByCategoryIdWithPagination(
+          categoryId,
+          Number(page),
+          Number(limit)
+        );
+
+      const responseBody = utils.buildPaginationResponse(
+        result,
+        totalPage,
+        totalCount,
+        Number(page),
+        result.length
+      );
+      res.status(200).json(responseBody);
     } catch (error) {
       next(error);
     }

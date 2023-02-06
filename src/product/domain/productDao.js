@@ -53,6 +53,23 @@ const productDao = {
 
     return await updatedProduct.save();
   },
+  async getProductsByCategoryIdWithPagination(categoryId, page, limit) {
+    const [totalCount, foundProducts] = await Promise.all([
+      Product.find({ category: categoryId }).countDocuments(),
+      Product.find({ category: categoryId })
+        .sort({ createdAt: -1 })
+        .skip(limit * (page - 1))
+        .limit(limit),
+    ]);
+
+    const totalPage = Math.ceil(totalCount / limit);
+
+    return {
+      totalPage,
+      totalCount,
+      foundProducts,
+    };
+  },
 };
 
 module.exports = productDao;
