@@ -102,8 +102,6 @@ const checkCreatable = (from) => async (req, res, next) => {
 
   const foundCategory = await categoryService.findById(category);
 
-  console.log(foundCategory);
-
   if (!foundCategory) {
     next(
       new AppError(
@@ -193,16 +191,77 @@ const checkUpdatable = (from) => async (req, res, next) => {
   }
 
   // 존재하는 string이면 길이 검사를 수행하는 함수 호출
-  utils.validateStringsIfExists({name, description, detailDescription, imageUrl}, from, next);
+  utils.validateStringsIfExists(
+    { name, description, detailDescription, imageUrl },
+    from,
+    next
+  );
   // 존재하는 number이면 0 이하의 값을 가지는지를 검사하는 함수 호출
-  utils.validateNumbersIfExists({price}, from, next);
+  utils.validateNumbersIfExists({ price }, from, next);
 
   next();
 };
+
+const checkReadableByCategory = (from) => async (req, res, next) => {
+  const { page, limit, categoryId } = req[from];
+
+  // categoryId가 유효한지 검사
+  utils.validateStringsWhetherExists({ categoryId }, from, next);
+
+  // page, limit에 대햇 유효성 검사
+  validateNumberStrings({ page, limit }, from, next);
+
+  // category가 실제로 존재하는지 검사
+  const foundCategory = await categoryService.findById(categoryId);
+
+  if (!foundCategory) {
+    next(
+      new AppError(
+        commonErrors.resourceNotFoundError,
+        400,
+        `${from}: 존재하지 않는 category입니다.`
+      )
+    );
+  }
+
+  // category에 대응하는 상품이 존재는 하는가?
+  if (foundCategory.productCount <= 0) {
+    next(
+      new AppError(
+        commonErrors.resourceNotFoundError,
+        400,
+        `${from}: 상품이 존재하지 않습니다`
+      )
+    );
+  }
+
+  next();
+};
+
+/**
+ * number가 되는 string properties의 유효성을 검사하는 함수
+ * @param {Object} validateProperties
+ * @param {string} from
+ * @param {import('express').NextFunction} next
+ */
+function validateNumberStrings(validateProperties, from, next) {
+  Object.entries(validateProperties).map(([key, value]) => {
+    if (value === undefined || Number(value) <= 0) {
+      next(
+        new AppError(
+          commonErrors.inputError,
+          400,
+          `${from}: ${key} 정보가 올바르지 않습니다`
+        )
+      );
+    }
+  });
+}
 
 module.exports = {
   checkCreatable,
   checkProductId,
   checkDeletable,
   checkUpdatable,
+  checkReadableByCategory,
 };
