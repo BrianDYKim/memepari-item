@@ -53,6 +53,12 @@ const productDao = {
 
     return await updatedProduct.save();
   },
+
+  async findProduct(){
+    const products = await Product.find({}).populate('Category');
+  
+    return products;
+  },
 };
 
 module.exports = productDao;
