@@ -16,7 +16,11 @@ const orderDao = {
     return await Order.findById(id);
   },
   async deleteById(id) {
-    return await Order.deleteOne({ id });
+    const foundOrder = await Order.findById(id);
+
+    console.log(foundOrder);
+    
+    return await foundOrder.delete();
   },
   async changeStatus({ id, status }) {
     const targetOrder = await Order.findById(id);

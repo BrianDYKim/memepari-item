@@ -23,7 +23,7 @@ const orderController = {
   },
   async deleteOrder(req, res, next) {
     try {
-      const { id } = req.param;
+      const { id } = req.params;
 
       const deleteResult = await orderService.deleteOrderById(id);
 
