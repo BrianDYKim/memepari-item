@@ -1,5 +1,6 @@
 const http = require('http');
 const express = require('express');
+const cors = require('cors');
 
 const { categoryRouter } = require('./category/router');
 const { productRouter } = require('./product/router');
@@ -18,6 +19,18 @@ async function createApp() {
   await loader.connectMongoDB();
 
   const expressApp = express();
+
+  const corsOptions = {
+    origin: 'http://http://kdt-ai6-team05.elicecoding.com', 
+    credentials: true
+  };
+
+  // Enable cors by the environment
+  if (config.environment === 'production') {
+    expressApp.use(cors(corsOptions));
+  } else {
+    expressApp.use(cors());
+  }
 
   // json
   expressApp.use(express.json());
