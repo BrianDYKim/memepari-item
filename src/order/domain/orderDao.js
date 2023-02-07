@@ -29,6 +29,8 @@ const orderDao = {
 
     return await targetOrder.save();
   },
+
+  //order의 id값으로 상태변경 하기
 };
 
 module.exports = orderDao;

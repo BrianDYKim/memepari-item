@@ -107,9 +107,29 @@ const checkCancellable = (from) => async (req, res, next) => {
       )
     );
   }
+  next();
+};
+
+const checkStatus = (from) => async (req, res, next) => {
+  const { id } = req[from];
+
+  utils.validateStringsWhetherExists({id}, from, next);
+
+  const foundOrder = await orderService.findOrderById(id);
+
+  if (!foundOrder) {
+    return next(
+      new AppError(
+        commonErrors.resourceNotFoundError,
+        400,
+        `${from}: 존재하지 않는 주문입니다.`
+      )
+    );
+  }
 
   next();
 };
+
 
 /**
  *  items의 원소 각각마다 productId로부터 검증을 수행하며 물품의 총 정보를 뽑아와주는 함수
@@ -187,4 +207,5 @@ module.exports = {
   checkCreatable,
   checkDeletable,
   checkCancellable,
+  checkStatus,
 };

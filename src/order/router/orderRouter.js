@@ -16,12 +16,34 @@ orderRouter.delete(
   orderMiddleware.checkDeletable('params'),
   orderController.deleteOrder
 );
+
 orderRouter.put(
   '/cancel',
   authMiddleware.checkUserRole, 
   orderMiddleware.checkCancellable('query'), 
   orderController.cancelOrder
-)
+);
+
+orderRouter.put(
+  '/ready',
+  authMiddleware.checkUserRole, 
+  orderMiddleware.checkStatus('query'), 
+  orderController.readyOrder
+);
+
+orderRouter.put(
+  '/delivery',
+  authMiddleware.checkUserRole, 
+  orderMiddleware.checkStatus('query'), 
+  orderController.deliveryOrder
+);
+
+orderRouter.put(
+  '/arrived',
+  authMiddleware.checkUserRole, 
+  orderMiddleware.checkStatus('query'), 
+  orderController.arrivedOrder
+);
 
 module.exports = {
   orderRouter,
