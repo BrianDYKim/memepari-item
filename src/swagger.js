@@ -46,7 +46,7 @@ function getBaseUrl() {
     return `http://localhost:${config.port}`;
   }
   
-  return `http://http://kdt-ai6-team05.elicecoding.com`
+  return `http://kdt-ai6-team05.elicecoding.com`
 }
 
 module.exports = {
