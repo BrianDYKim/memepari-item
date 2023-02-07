@@ -1,3 +1,4 @@
+const config = require('./config');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
@@ -11,7 +12,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3500',
+        url: getBaseUrl(),
       },
     ],
     components: {
@@ -39,6 +40,14 @@ const options = {
 };
 
 const specs = swaggerJsdoc(options);
+
+function getBaseUrl() {
+  if (config.environment === 'development') {
+    return `http://localhost:${config.port}`;
+  }
+  
+  return `http://http://kdt-ai6-team05.elicecoding.com`
+}
 
 module.exports = {
   swaggerUi,
