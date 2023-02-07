@@ -1,0 +1,15 @@
+components:
+  schemas:
+    UpdateCategoryRequest:
+      type: object
+      description: name, description 중 적어도 하나는 들어와야합니다
+      properties:
+        name:
+          type: string
+          description: 카테고리의 이름입니다. 중복은 혀용하지 않습니다
+        description:
+          type: string
+          description: 카테고리에 대한 설명입니다.
+      example:
+        name: 직장인
+        description: 피곤한 직장인들을 위한 밈 카테고리입니다

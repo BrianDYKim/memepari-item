@@ -1,6 +1,7 @@
 const http = require('http');
 const express = require('express');
-const categoryRouter = require('./category/router/categoryRouter');
+
+const { categoryRouter } = require('./category/router');
 const { productRouter } = require('./product/router');
 const { orderRouter } = require('./order/router');
 
@@ -10,6 +11,8 @@ const { AppError } = require('./misc/AppError');
 const { commonErrors } = require('./misc/commonErrors');
 const utils = require('./misc/utils');
 
+const { swaggerUi, specs } = require('./swagger');
+
 async function createApp() {
   // MongoDB에 연결
   await loader.connectMongoDB();
@@ -18,6 +21,9 @@ async function createApp() {
 
   // json
   expressApp.use(express.json());
+
+  // swagger docs
+  expressApp.use('/item-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
   // Health check router
   expressApp.get('/health', (req, res) => {

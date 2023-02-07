@@ -59,15 +59,12 @@ const productService = {
   async deleteProductById(id) {
     const deleteResult = await productDao.deleteById(id);
 
-    console.log('delete service');
-    console.log(deleteResult);
-
     return entityToDetailResponse(deleteResult);
   },
   async findById(id) {
     const foundProduct = await productDao.findById(id);
 
-    return foundProduct ? entityToDetailResponse(foundProduct): null;
+    return foundProduct ? entityToDetailResponse(foundProduct) : null;
   },
   async updateProductById(
     id,
@@ -90,6 +87,14 @@ const productService = {
         page,
         limit
       );
+
+    if (foundProducts.length === 0) {
+      throw new AppError(
+        commonErrors.resourceNotFoundError,
+        400,
+        '해당 페이지에 존재하는 품목이 존재하지 않습니다'
+      );
+    }
 
     const simpleResponses = foundProducts.map((product) =>
       entityToSimpleResponse(product)

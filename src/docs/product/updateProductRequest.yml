@@ -1,0 +1,27 @@
+components:
+  schemas:
+    UpdateProductRequest:
+      type: object
+      description: name, price, description, detailDescription, imageUrl 중 적어도 하나는 들어와야합니다
+      properties:
+        name:
+          type: string
+          description: 품목의 이름입니다. 중복은 혀용하지 않습니다
+        price:
+          type: number
+          description: 품목의 가격입니다. 0 이하의 정수는 허용하지 않습니다
+        description:
+          type: string
+          description: 품목에 대한 설명입니다.
+        detailDescription:
+          type: string
+          description: 품목에 대한 자세한 설명입니다.
+        imageUrl:
+          type: string
+          description: image의 url 정보입니다.
+      example:
+        name: 직장인
+        price: 1200
+        description: 피곤한 직장인들을 위한 밈입니다
+        detailDescription: 피곤한 직장인 밈에 대한 자세한 설명입니다.
+        imageUrl: imageUrl

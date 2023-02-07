@@ -16,7 +16,7 @@ const categoryController = {
         );
       }
       const responseBody = utils.buildResponse(readCategoryResponseList);
-      res.status(201).json(responseBody);
+      res.status(200).json(responseBody);
     } catch (error) {
       next(error);
     }
@@ -55,13 +55,13 @@ const categoryController = {
     try {
       const { name: oldName } = req.params;
       const { name: newName, description } = req.body;
-      await categoryService.updateCategoryByName({
+      const updatedCategoryResponse = await categoryService.updateCategoryByName({
         oldName,
         newName,
         description,
       });
 
-      const responseBody = utils.buildResponse('OK');
+      const responseBody = utils.buildResponse(updatedCategoryResponse);
 
       return res.status(201).json(responseBody);
     } catch (error) {

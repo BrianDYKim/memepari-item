@@ -9,8 +9,6 @@ console.log(
   `어플리케이션을 다음의 환경으로 시작합니다: ${process.env.NODE_ENV}`
 );
 
-process.env.AUTH_SERVER_URL = process.env.AUTH_SERVER_URL ?? 'http://localhost:4000/api/users'
-
 process.env.PORT = process.env.PORT ?? 3500;
 
 // .env 파일이 정의되어있는지?
@@ -22,6 +20,8 @@ if (envFound.error) {
     "Couldn't find .env file on root folder"
   );
 }
+
+process.env.AUTH_SERVER_URL = process.env.AUTH_SERVER_URL ?? 'http://localhost:4000/api/users'
 
 // mongoDBUrl을 config에서 정의
 const mongoDbUrl = process.env.MONGODB_URL ?? 'mongodb://localhost:27017';
