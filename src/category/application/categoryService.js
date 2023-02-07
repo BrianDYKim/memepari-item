@@ -41,13 +41,15 @@ const categoryService = {
   },
 
   async updateCategoryByName({ oldName, newName, description }) {
-    const result = await categoryDao.findOneByName(oldName);
+    const { id } = await categoryDao.findOneByName(oldName);
 
-    console.log(result);
+    const updateResult = await categoryDao.updateOneById({
+      id,
+      newName,
+      description,
+    });
 
-    const id = result.id;
-
-    return await categoryDao.updateOneById({ id, newName, description });
+    return entityToResponse(updateResult);
   },
 
   async increaseProductCount(categoryId) {
@@ -56,7 +58,7 @@ const categoryService = {
 
   async decreaseProductCount(categoryId) {
     return await categoryDao.updateProductCountById(categoryId, -1);
-  }
+  },
 };
 
 function entityToResponse(category) {
