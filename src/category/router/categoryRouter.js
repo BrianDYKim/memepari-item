@@ -61,9 +61,7 @@ categoryRouter.get('/', categoryController.findAllCategory);
  *                  error:
  *                    type: null
  *                  data:
- *                    type: array
- *                    items: 
- *                      $ref: '#/components/schemas/CategoryDetailResponse'
+ *                    $ref: '#/components/schemas/CategoryDetailResponse'
  */
 categoryRouter.post(
   '/',
@@ -99,9 +97,7 @@ categoryRouter.post(
  *                  error:
  *                    type: null
  *                  data:
- *                    type: array
- *                    items: 
- *                      $ref: '#/components/schemas/CategoryDetailResponse'
+ *                    $ref: '#/components/schemas/CategoryDetailResponse'
  */
 categoryRouter.delete(
   '/:name',
@@ -143,9 +139,7 @@ categoryRouter.delete(
  *                  error:
  *                    type: null
  *                  data:
- *                    type: array
- *                    items: 
- *                      $ref: '#/components/schemas/CategoryDetailResponse'
+ *                    $ref: '#/components/schemas/CategoryDetailResponse'
  */
 categoryRouter.put(
   '/:name',

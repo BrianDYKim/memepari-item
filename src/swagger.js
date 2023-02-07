@@ -31,7 +31,8 @@ const options = {
     ],
   },
   apis: [
-    './src/docs/*',
+    './src/docs/category/*',
+    './src/docs/product/*', 
     './src/category/router/categoryRouter.js',
     './src/product/router/productRouter.js',
   ],

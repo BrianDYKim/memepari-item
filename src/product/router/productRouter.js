@@ -60,9 +60,7 @@ productRouter.get('/all', productController.findAllProduct);
  *                  error:
  *                    type: null
  *                  data:
- *                    type: array
- *                    items: 
- *                      $ref: '#/components/schemas/ProductDetailResponse'
+ *                    $ref: '#/components/schemas/ProductDetailResponse'
  */
 productRouter.get(
   '/',
@@ -125,6 +123,34 @@ productRouter.get(
   productController.getProductsByCategoryIdWithPagination
 );
 
+/**
+ * @swagger
+ *  /api/v1/products:
+ *    post:
+ *      security:
+ *        - bearerAuth: []
+ *      summary: Update Product (관리자 권한 필요)
+ *      tags:
+ *        - Product
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/CreateProductRequest'
+ *      responses:
+ *        "200":
+ *          description: 생성 완료
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  error:
+ *                    type: null
+ *                  data: 
+ *                    $ref: '#/components/schemas/ProductDetailResponse'
+ */
 productRouter.post(
   '/',
   authMiddleware.checkAdminRole,
@@ -164,10 +190,8 @@ productRouter.post(
  *                properties:
  *                  error:
  *                    type: null
- *                  data:
- *                    type: array
- *                    items: 
- *                      $ref: '#/components/schemas/ProductDetailResponse'
+ *                  data: 
+ *                    $ref: '#/components/schemas/ProductDetailResponse'
  */
 productRouter.put(
   '/:id',
@@ -176,6 +200,35 @@ productRouter.put(
   productController.updateProduct
 );
 
+/**
+ * @swagger
+ *  /api/v1/products/{id}:
+ *    delete:
+ *      security:
+ *        - bearerAuth: []
+ *      summary: Delete Product (관리자 권한 필요)
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *            type: string
+ *          required: true
+ *          description: product's id
+ *      tags:
+ *        - Product
+ *      responses:
+ *        "200":
+ *          description: 삭제 완료
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  error:
+ *                    type: null
+ *                  data:
+ *                    $ref: '#/components/schemas/ProductDetailResponse'
+ */
 productRouter.delete(
   '/:id',
   authMiddleware.checkAdminRole, 
