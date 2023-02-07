@@ -1,0 +1,43 @@
+
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - name
+        - price
+        - description
+        - detailDescription
+        - author
+        - imageUrl
+        - category
+      properties:
+        name:
+          type: string
+          description: 밈의 이름입니다.
+        price:
+          type: number
+          description: 밈의 가격입니다.
+        description:
+          type: string
+          description: 밈에 대한 설명입니다.
+        detailDescription:
+          type: string
+          description: 밈에 대한 자세한 설명입니다.
+        author:
+          type: string
+          description: 밈의 제작자입니다.
+        imageUrl: 
+          type: string
+          description: 밈의 미리보기 이미지입니다.
+        category:
+          type: string
+          description: category의 id입니다. ObjectID의 타입을 가집니다.
+      example:
+        name: 너무 피곤해요!
+        price: 1000
+        description: 피곤한 박명수
+        detailDescription: 무한도전에 나온 너무 피곤한 박명수
+        author: 무한도전
+        imageUrl: http://localhost:3500/
+        category: 1231249qwegyuqwe12
