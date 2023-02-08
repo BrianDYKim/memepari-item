@@ -6,12 +6,25 @@ const { orderService } = require('../../application');
 const orderController = {
   async createOrder(req, res, next) {
     try {
-      const { totalCount, totalPrice, items } = req.body;
+      const {
+        totalCount,
+        totalPrice,
+        items,
+        orderBy,
+        orderMessage,
+        phoneNumber,
+      } = req.body;
+
+      const { email } = req.authResult;
 
       const createdOrderResponse = await orderService.createOrder({
         totalCount,
         totalPrice,
         items,
+        userEmail: email,
+        orderBy,
+        orderMessage,
+        phoneNumber,
       });
 
       const responseBody = utils.buildResponse(createdOrderResponse);

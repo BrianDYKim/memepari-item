@@ -4,11 +4,23 @@ const { orderDao } = require('../domain');
 const Status = require('../domain/vo/status.vo');
 
 const orderService = {
-  async createOrder({ totalCount, totalPrice, items }) {
+  async createOrder({
+    totalCount,
+    totalPrice,
+    items,
+    userEmail,
+    orderBy,
+    orderMessage,
+    phoneNumber,
+  }) {
     const createResult = await orderDao.create({
       totalCount,
       totalPrice,
       items,
+      userEmail,
+      orderBy,
+      orderMessage,
+      phoneNumber,
     });
 
     return entityToDetailResponse(createResult);
@@ -40,7 +52,7 @@ const orderService = {
 };
 
 function entityToDetailResponse(order) {
-  const { id, totalCount, totalPrice, items, status } = order;
+  const { id, totalCount, totalPrice, items, status, userEmail, orderBy, orderMessage, phoneNumber } = order;
 
   const responseItems = items.map((item) => ({
     productId: item.productId,
@@ -49,7 +61,7 @@ function entityToDetailResponse(order) {
     count: item.count,
   }));
 
-  return { id, totalCount, totalPrice, items: responseItems, status };
+  return { id, totalCount, totalPrice, items: responseItems, status, userEmail, orderBy, orderMessage, phoneNumber };
 }
 
 module.exports = orderService;

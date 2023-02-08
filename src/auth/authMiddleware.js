@@ -11,18 +11,23 @@ const permissons = {
 };
 
 const checkRole = (permission) => async (req, res, next) => {
-  await axios
-    .get(`${baseUrl}/auth/${permission}`, {
+  try {
+    const response = await axios.get(`${baseUrl}/auth/${permission}`, {
       headers: {
         Authorization: req.headers.authorization,
       },
-    })
-    .then((data) => next())
-    .catch((error) => {
-      return next(
-        new AppError(commonErrors.authorizationError, 403, '권한이 없습니다.')
-      );
     });
+
+    const responseBody = response.data;
+
+    req.authResult = responseBody.data; // id, email을 req.authResult에 삽입
+
+    next();
+  } catch (error) {
+    next(
+      new AppError(commonErrors.authorizationError, 403, '권한이 없습니다.')
+    );
+  }
 };
 
 /**

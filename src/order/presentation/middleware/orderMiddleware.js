@@ -7,7 +7,22 @@ const Status = require('../../domain/vo/status.vo');
 const utils = require('../../../misc/utils');
 
 const checkCreatable = (from) => async (req, res, next) => {
-  const { totalCount, totalPrice, items } = req[from];
+  const { totalCount, totalPrice, items, orderBy, orderMessage, phoneNumber } =
+    req[from];
+
+  // orderBy, orderMessage, phoneNumber 검증
+  utils.validateStringsWhetherExists(
+    { orderBy, orderMessage, phoneNumber },
+    from,
+    next
+  );
+
+  // 문자열들의 길이 검증
+  const validateStringsInfo = [
+    { target: orderBy, length: 10, targetName: 'orderBy' },
+    { target: orderMessage, length: 100, targetName: 'orderMessage' },
+  ];
+  validateStringsInfo.map((info) => utils.validateStringLongerThanLength(info, from, next));
 
   if (items === undefined || items.length === 0) {
     return next(

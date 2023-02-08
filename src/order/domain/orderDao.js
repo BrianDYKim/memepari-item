@@ -2,12 +2,24 @@ const Order = require('./orderSchema');
 const Status = require('./vo/status.vo');
 
 const orderDao = {
-  async create({ totalCount, totalPrice, items }) {
+  async create({
+    totalCount,
+    totalPrice,
+    items,
+    userEmail,
+    orderBy,
+    orderMessage,
+    phoneNumber,
+  }) {
     const newOrder = new Order({
       totalCount,
       totalPrice,
       items,
       status: Status.READY,
+      userEmail,
+      orderBy,
+      orderMessage,
+      phoneNumber,
     });
 
     return await newOrder.save();
@@ -19,7 +31,7 @@ const orderDao = {
     const foundOrder = await Order.findById(id);
 
     console.log(foundOrder);
-    
+
     return await foundOrder.delete();
   },
   async changeStatus(id, status) {
