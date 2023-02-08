@@ -47,42 +47,14 @@ const orderController = {
       next(error);
     }
   },
-  async readyOrder(req, res, next) {
+  async changeOrderStatus(req, res, next) {
     try {
       const { id } = req.query;
+      const { status } = req.body;
 
-      const readyOrderResult = await orderService.readyOrder(id);
+      const changedOrder = await orderService.changeStatus(id, status);
 
-      const responseBody = utils.buildResponse(readyOrderResult);
-
-      res.json(responseBody);
-    } catch (error) {
-      next(error);
-    }
-  },
-
-  async deliveryOrder(req, res, next) {
-    try {
-      const { id } = req.query;
-
-      const deliveryOrderResult = await orderService.deliveryOrder(id);
-
-      const responseBody = utils.buildResponse(deliveryOrderResult);
-
-      res.json(responseBody);
-    } catch (error) {
-      next(error);
-    }
-  },
-
-  async arrivedOrder(req, res, next) {
-    try {
-      const { id } = req.query;
-
-      const arrivedOrderResult = await orderService.arrivedOrder(id);
-
-      const responseBody = utils.buildResponse(arrivedOrderrResult);
-
+      const responseBody = utils.buildResponse(changedOrder);
       res.json(responseBody);
     } catch (error) {
       next(error);

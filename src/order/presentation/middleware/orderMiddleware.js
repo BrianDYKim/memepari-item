@@ -62,7 +62,7 @@ const checkCreatable = (from) => async (req, res, next) => {
 const checkDeletable = (from) => async (req, res, next) => {
   const { id } = req[from];
 
-  utils.validateStringsWhetherExists({id}, from, next);
+  utils.validateStringsWhetherExists({ id }, from, next);
 
   const foundOrder = await orderService.findOrderById(id);
 
@@ -82,7 +82,7 @@ const checkDeletable = (from) => async (req, res, next) => {
 const checkCancellable = (from) => async (req, res, next) => {
   const { id } = req[from];
 
-  utils.validateStringsWhetherExists({id}, from, next);
+  utils.validateStringsWhetherExists({ id }, from, next);
 
   // 실제 존재하는 주문인지 확인
   const foundOrder = await orderService.findOrderById(id);
@@ -90,8 +90,8 @@ const checkCancellable = (from) => async (req, res, next) => {
   if (!foundOrder) {
     return next(
       new AppError(
-        commonErrors.resourceNotFoundError, 
-        400, 
+        commonErrors.resourceNotFoundError,
+        400,
         `${from}: 주문이 존재하지 않습니다.`
       )
     );
@@ -101,8 +101,8 @@ const checkCancellable = (from) => async (req, res, next) => {
   if (foundOrder.status !== Status.READY) {
     return next(
       new AppError(
-        commonErrors.requestValidationError, 
-        400, 
+        commonErrors.requestValidationError,
+        400,
         `준비중인 주문만 취소 가능합니다.`
       )
     );
@@ -110,10 +110,23 @@ const checkCancellable = (from) => async (req, res, next) => {
   next();
 };
 
-const checkStatus = (from) => async (req, res, next) => {
+const checkStatusChangable = (from) => async (req, res, next) => {
   const { id } = req[from];
+  const { status } = req.body;
 
-  utils.validateStringsWhetherExists({id}, from, next);
+  utils.validateStringsWhetherExists({ id }, from, next);
+  utils.validateStringsWhetherExists({ status }, 'body', next);
+
+  // status가 Status vo에 존재하는지 검증
+  if (!Object.values(Status).includes(status)) {
+    return next(
+      new AppError(
+        commonErrors.inputError,
+        400,
+        'body: 올바르지 않은 status 정보입니다.'
+      )
+    );
+  }
 
   const foundOrder = await orderService.findOrderById(id);
 
@@ -130,7 +143,6 @@ const checkStatus = (from) => async (req, res, next) => {
   next();
 };
 
-
 /**
  *  items의 원소 각각마다 productId로부터 검증을 수행하며 물품의 총 정보를 뽑아와주는 함수
  *  1. productId를 이용해서 product를 가져온다
@@ -139,7 +151,7 @@ const checkStatus = (from) => async (req, res, next) => {
 async function drainProductInfo(item, next) {
   const { productId, name, price, count } = item;
 
-  utils.validateStringsWhetherExists({productId}, 'params', next);
+  utils.validateStringsWhetherExists({ productId }, 'params', next);
 
   const realProduct = await productService.findById(productId);
 
@@ -207,5 +219,5 @@ module.exports = {
   checkCreatable,
   checkDeletable,
   checkCancellable,
-  checkStatus,
+  checkStatus: checkStatusChangable,
 };

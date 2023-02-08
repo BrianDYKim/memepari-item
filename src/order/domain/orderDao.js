@@ -22,15 +22,13 @@ const orderDao = {
     
     return await foundOrder.delete();
   },
-  async changeStatus({ id, status }) {
+  async changeStatus(id, status) {
     const targetOrder = await Order.findById(id);
 
     targetOrder.status = status;
 
     return await targetOrder.save();
   },
-
-  //order의 id값으로 상태변경 하기
 };
 
 module.exports = orderDao;

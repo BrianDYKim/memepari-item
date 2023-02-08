@@ -25,24 +25,10 @@ orderRouter.put(
 );
 
 orderRouter.put(
-  '/ready',
-  authMiddleware.checkUserRole, 
+  '/status',
+  authMiddleware.checkAdminRole, 
   orderMiddleware.checkStatus('query'), 
-  orderController.readyOrder
-);
-
-orderRouter.put(
-  '/delivery',
-  authMiddleware.checkUserRole, 
-  orderMiddleware.checkStatus('query'), 
-  orderController.deliveryOrder
-);
-
-orderRouter.put(
-  '/arrived',
-  authMiddleware.checkUserRole, 
-  orderMiddleware.checkStatus('query'), 
-  orderController.arrivedOrder
+  orderController.changeOrderStatus
 );
 
 module.exports = {
