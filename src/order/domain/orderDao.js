@@ -41,6 +41,12 @@ const orderDao = {
 
     return await targetOrder.save();
   },
+  async findOrdersByEmail(userEmail) {
+    return await Order.find({ userEmail });
+  },
+  async findAllOrders() {
+    return await Order.find({});
+  },
 };
 
 module.exports = orderDao;

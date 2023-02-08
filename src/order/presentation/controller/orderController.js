@@ -73,6 +73,48 @@ const orderController = {
       next(error);
     }
   },
+
+  async findOrdersOfUser(req, res, next) {
+    try {
+      const { email } = req.authResult;
+
+      const foundOrders = await orderService.findOrdersByEmail(email);
+
+      if (foundOrders.length === 0) {
+        throw new AppError(
+          commonErrors.resourceNotFoundError,
+          400,
+          '주문이 존재하지 않습니다'
+        );
+      }
+
+      const responseBody = utils.buildResponse(foundOrders);
+
+      res.status(200).json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async findAllOrders(req, res, next) {
+    try {
+      const foundOrders = await orderService.findAllOrders();
+
+      if (foundOrders.length === 0) {
+        throw new AppError(
+          commonErrors.resourceNotFoundError,
+          400,
+          '주문이 존재하지 않습니다'
+        );
+      }
+
+      const responseBody = utils.buildResponse(foundOrders);
+
+      res.status(200).json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = orderController;
