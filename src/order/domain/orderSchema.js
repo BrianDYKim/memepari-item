@@ -33,6 +33,21 @@ const orderSchema = new Schema(
     status: {
       type: String, 
       required: true
+    }, 
+    userEmail: {
+      type: String, 
+      required: true
+    }, 
+    orderBy: {
+      type: String, 
+      required: true
+    }, 
+    orderMessage: {
+      type: String
+    }, 
+    phoneNumber: {
+      type: String, 
+      required: true
     }
   },
   { timestamps: true }
