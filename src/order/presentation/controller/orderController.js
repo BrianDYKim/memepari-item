@@ -6,12 +6,25 @@ const { orderService } = require('../../application');
 const orderController = {
   async createOrder(req, res, next) {
     try {
-      const { totalCount, totalPrice, items } = req.body;
+      const {
+        totalCount,
+        totalPrice,
+        items,
+        orderBy,
+        orderMessage,
+        phoneNumber,
+      } = req.body;
+
+      const { email } = req.authResult;
 
       const createdOrderResponse = await orderService.createOrder({
         totalCount,
         totalPrice,
         items,
+        userEmail: email,
+        orderBy,
+        orderMessage,
+        phoneNumber,
       });
 
       const responseBody = utils.buildResponse(createdOrderResponse);
@@ -56,6 +69,48 @@ const orderController = {
 
       const responseBody = utils.buildResponse(changedOrder);
       res.json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async findOrdersOfUser(req, res, next) {
+    try {
+      const { email } = req.authResult;
+
+      const foundOrders = await orderService.findOrdersByEmail(email);
+
+      if (foundOrders.length === 0) {
+        throw new AppError(
+          commonErrors.resourceNotFoundError,
+          400,
+          '주문이 존재하지 않습니다'
+        );
+      }
+
+      const responseBody = utils.buildResponse(foundOrders);
+
+      res.status(200).json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async findAllOrders(req, res, next) {
+    try {
+      const foundOrders = await orderService.findAllOrders();
+
+      if (foundOrders.length === 0) {
+        throw new AppError(
+          commonErrors.resourceNotFoundError,
+          400,
+          '주문이 존재하지 않습니다'
+        );
+      }
+
+      const responseBody = utils.buildResponse(foundOrders);
+
+      res.status(200).json(responseBody);
     } catch (error) {
       next(error);
     }
