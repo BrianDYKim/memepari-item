@@ -24,10 +24,19 @@ const orderService = {
     return entityToDetailResponse(deletedOrder);
   },
   async cancelOrder(id) {
-    const cancelOrderResult = await orderDao.changeStatus({id, status: Status.CANCELLED});
-    
+    const cancelOrderResult = await orderDao.changeStatus({
+      id,
+      status: Status.CANCELLED,
+    });
+
     return entityToDetailResponse(cancelOrderResult);
-  }
+  },
+
+  async changeStatus(id, status) {
+    const readyOrderResult = await orderDao.changeStatus(id, status);
+
+    return entityToDetailResponse(readyOrderResult);
+  },
 };
 
 function entityToDetailResponse(order) {

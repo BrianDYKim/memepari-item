@@ -16,12 +16,20 @@ orderRouter.delete(
   orderMiddleware.checkDeletable('params'),
   orderController.deleteOrder
 );
+
 orderRouter.put(
   '/cancel',
   authMiddleware.checkUserRole, 
   orderMiddleware.checkCancellable('query'), 
   orderController.cancelOrder
-)
+);
+
+orderRouter.put(
+  '/status',
+  authMiddleware.checkAdminRole, 
+  orderMiddleware.checkStatus('query'), 
+  orderController.changeOrderStatus
+);
 
 module.exports = {
   orderRouter,

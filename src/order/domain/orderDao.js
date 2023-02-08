@@ -22,7 +22,7 @@ const orderDao = {
     
     return await foundOrder.delete();
   },
-  async changeStatus({ id, status }) {
+  async changeStatus(id, status) {
     const targetOrder = await Order.findById(id);
 
     targetOrder.status = status;

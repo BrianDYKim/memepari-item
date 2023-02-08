@@ -47,6 +47,19 @@ const orderController = {
       next(error);
     }
   },
+  async changeOrderStatus(req, res, next) {
+    try {
+      const { id } = req.query;
+      const { status } = req.body;
+
+      const changedOrder = await orderService.changeStatus(id, status);
+
+      const responseBody = utils.buildResponse(changedOrder);
+      res.json(responseBody);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = orderController;
