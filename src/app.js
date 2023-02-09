@@ -21,7 +21,7 @@ async function createApp() {
   const expressApp = express();
 
   const corsOptions = {
-    origin: 'http://http://kdt-ai6-team05.elicecoding.com', 
+    origin: 'http://kdt-ai6-team05.elicecoding.com', 
     credentials: true
   };
 
