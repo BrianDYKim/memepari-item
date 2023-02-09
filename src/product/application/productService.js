@@ -131,9 +131,9 @@ function entityToDetailResponse(product) {
 }
 
 function entityToSimpleResponse(product) {
-  const { id, name, price, description, author, imageUrl } = product;
+  const { id, name, price, description, author, imageUrl, category } = product;
 
-  const simpleResponse = { id, name, price, description, author, imageUrl };
+  const simpleResponse = { id, name, price, description, author, imageUrl, category };
 
   return simpleResponse;
 }

@@ -9,6 +9,7 @@ components:
         - description
         - author
         - imageUrl
+        - category
       properties:
         id:
           type: string
@@ -28,6 +29,9 @@ components:
         imageUrl:
           type: string
           description: 해당 밈의 이미지 url 정보입니다.
+        category: 
+          type: string
+          description: 해당 품목의 category id 정보입니다.
       example:
         id: 123rewrwtitsdfgh123
         name: 울고있는 개발자
@@ -35,3 +39,4 @@ components:
         description: 피곤한 개발자. 퇴근 제발 좀...
         author: 무한도전
         imageUrl: imageUrl
+        category: qwer1312as
