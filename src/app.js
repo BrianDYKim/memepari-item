@@ -21,16 +21,12 @@ async function createApp() {
   const expressApp = express();
 
   const corsOptions = {
-    origin: 'http://kdt-ai6-team05.elicecoding.com', 
-    credentials: true
+    origin: 'http://kdt-ai6-team05.elicecoding.com',
+    credentials: true,
   };
 
   // Enable cors by the environment
-  if (config.environment === 'production') {
-    expressApp.use(cors(corsOptions));
-  } else {
-    expressApp.use(cors());
-  }
+  expressApp.use(cors());
 
   // json
   expressApp.use(express.json());
