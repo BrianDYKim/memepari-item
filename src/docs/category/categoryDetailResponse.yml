@@ -1,0 +1,27 @@
+components:
+  schemas:
+    CategoryDetailResponse:
+      type: object
+      required:
+        - id
+        - name
+        - productCount
+        - description
+      properties:
+        id:
+          type: string
+          description: category의 id 값입니다.
+        name:
+          type: string
+          description: 카테고리의 이름입니다. 중복은 혀용하지 않습니다
+        productCount:
+          type: number
+          description: category에 속한 물품의 개수입니다.
+        description:
+          type: string
+          description: 카테고리에 대한 설명입니다.
+      example:
+        id: 123rewrwtitsdfgh123
+        name: 직장인
+        productCount: 1
+        description: 피곤한 직장인들을 위한 밈 카테고리입니다

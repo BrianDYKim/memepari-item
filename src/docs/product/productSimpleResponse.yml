@@ -1,0 +1,42 @@
+components:
+  schemas:
+    ProductSimpleResponse:
+      type: object
+      required:
+        - id
+        - name
+        - price
+        - description
+        - author
+        - imageUrl
+        - category
+      properties:
+        id:
+          type: string
+          description: product의 id 값입니다.
+        name:
+          type: string
+          description: product의 이름입니다. 중복은 혀용하지 않습니다
+        price:
+          type: number
+          description: product의 가격입니다. 0 이하의 정수는 허용하지 않습니다
+        description:
+          type: string
+          description: product 대한 설명입니다. 100자 초과로는 허용하지 않습니다.
+        author:
+          type: string 
+          description: 해당 밈의 제작자입니다.
+        imageUrl:
+          type: string
+          description: 해당 밈의 이미지 url 정보입니다.
+        category: 
+          type: string
+          description: 해당 품목의 category id 정보입니다.
+      example:
+        id: 123rewrwtitsdfgh123
+        name: 울고있는 개발자
+        price: 1500
+        description: 피곤한 개발자. 퇴근 제발 좀...
+        author: 무한도전
+        imageUrl: imageUrl
+        category: qwer1312as
